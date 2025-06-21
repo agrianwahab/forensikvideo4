@@ -1,0 +1,2270 @@
+[
+    {
+        "id": "5e48ce88-5ba9-463d-b722-9545d85c37d1",
+        "timestamp": "2025-06-21T03:05:02.594144",
+        "video_name": "F_Dup1_h264_32_IPB_28.mp4",
+        "artifacts_folder": "analysis_artifacts\\5e48ce88-5ba9-463d-b722-9545d85c37d1",
+        "preservation_hash": "3b9b1eb01f0de35e9df0c74dc87c69a7f31fecf9dc8b9869d7829ff00b114847",
+        "summary": {
+            "total_frames": 150,
+            "total_anomaly": 46,
+            "pct_anomaly": 30.67,
+            "total_events": 31,
+            "anomaly_density": 0.30666666666666664
+        },
+        "metadata": {
+            "Format": {
+                "Filename": "F_Dup1_h264_32_IPB_28.mp4",
+                "Format Name": "QuickTime / MOV",
+                "Duration": "15.000 s",
+                "Size": "9.24 MB",
+                "Bit Rate": "5166 kb/s",
+                "Creation Time": "N/A"
+            },
+            "Video Stream": {
+                "Codec": "H264",
+                "Profile": "High",
+                "Resolution": "1920x1080",
+                "Aspect Ratio": "N/A",
+                "Pixel Format": "yuv420p",
+                "Frame Rate": "30.00 FPS",
+                "Bitrate": "5163 kb/s",
+                "Encoder": "N/A"
+            }
+        },
+        "integrity_analysis": {
+            "score": 50,
+            "description": "Sangat Buruk - Manipulasi Signifikan",
+            "calculation_details": {
+                "base_score": 60,
+                "percentage_anomaly": 30.67,
+                "adjustments": [
+                    [
+                        "Anomali Kepercayaan Sangat Tinggi",
+                        -15
+                    ],
+                    [
+                        "Sampel Frame Memadai",
+                        3
+                    ]
+                ],
+                "final_score": 50,
+                "scoring_method": "Weighted Multi-Factor Analysis",
+                "factors_considered": [
+                    "Persentase frame anomali",
+                    "Tingkat kepercayaan anomali",
+                    "Distribusi temporal anomali",
+                    "Kualitas sampel analisis"
+                ],
+                "description": "Sangat Buruk - Manipulasi Signifikan"
+            },
+            "timestamp": "2025-06-21T03:04:35.740492"
+        },
+        "localization_details": {
+            "total_events": 31,
+            "events_by_type": {
+                "anomaly_duplication": 14,
+                "anomaly_discontinuity": 17
+            },
+            "total_anomalous_frames": 46,
+            "average_event_duration": 0.048387096774193526,
+            "max_event_duration": 0.5999999999999996,
+            "high_severity_events": 14
+        },
+        "pipeline_assessment": {
+            "tahap_1": {
+                "nama": "Pra-pemrosesan & Ekstraksi Fitur",
+                "status": "completed",
+                "quality_score": 100,
+                "metrics": {
+                    "total_frames_extracted": 150,
+                    "hash_coverage": "100.0%",
+                    "clustering_coverage": "100.0%",
+                    "metadata_completeness": true
+                },
+                "issues": []
+            },
+            "tahap_2": {
+                "nama": "Analisis Anomali Temporal",
+                "status": "completed",
+                "quality_score": 100,
+                "metrics": {
+                    "ssim_coverage": "100.0%",
+                    "optical_flow_coverage": "100.0%",
+                    "temporal_metrics_computed": true
+                },
+                "issues": []
+            },
+            "tahap_3": {
+                "nama": "Sintesis Bukti & Investigasi",
+                "status": "completed",
+                "quality_score": 100,
+                "metrics": {
+                    "anomalies_detected": 46,
+                    "evidence_collected": 46,
+                    "ela_analyses": 0,
+                    "sift_analyses": 29
+                },
+                "issues": []
+            },
+            "tahap_4": {
+                "nama": "Visualisasi & Penilaian",
+                "status": "in_progress",
+                "quality_score": 100,
+                "metrics": {
+                    "localizations_created": 31,
+                    "plots_generated": 1,
+                    "integrity_calculated": true
+                },
+                "issues": []
+            }
+        },
+        "localizations": [
+            {
+                "event": "anomaly_duplication",
+                "start_frame": 1,
+                "end_frame": 4,
+                "start_ts": 0.1,
+                "end_ts": 0.4,
+                "frame_count": 4,
+                "confidence": "SANGAT TINGGI",
+                "reasons": "Duplikasi dari frame 0",
+                "metrics": {
+                    "source_frame": 0,
+                    "ssim_to_source": 0.967,
+                    "sift_inliers": 2401,
+                    "sift_good_matches": 2413,
+                    "sift_inlier_ratio": 0.995
+                },
+                "all_metrics": [
+                    {
+                        "source_frame": 0,
+                        "ssim_to_source": 0.967,
+                        "sift_inliers": 2401,
+                        "sift_good_matches": 2413,
+                        "sift_inlier_ratio": 0.995
+                    },
+                    {
+                        "source_frame": 1,
+                        "ssim_to_source": 0.9687,
+                        "sift_inliers": 2105,
+                        "sift_good_matches": 2120,
+                        "sift_inlier_ratio": 0.993
+                    },
+                    {
+                        "source_frame": 2,
+                        "ssim_to_source": 0.97,
+                        "sift_inliers": 2084,
+                        "sift_good_matches": 2096,
+                        "sift_inlier_ratio": 0.994
+                    },
+                    {
+                        "source_frame": 3,
+                        "ssim_to_source": 0.9699,
+                        "sift_inliers": 2212,
+                        "sift_good_matches": 2231,
+                        "sift_inlier_ratio": 0.991
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000001_orig.jpg",
+                "ela_path": null,
+                "sift_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000000_orig_vs_frame_000001_orig.jpg",
+                "explanations": {
+                    "duplication": {
+                        "type": "frame_duplication",
+                        "duplicate_frame": 4,
+                        "source_frame": 3,
+                        "timestamp_duplicate": 0.4,
+                        "timestamp_source": 0.3,
+                        "time_gap": 0.10000000000000003,
+                        "confidence": "very_high",
+                        "technical_explanation": "Frame 4 adalah duplikasi dari frame 3 dengan 2212 titik fitur yang cocok sempurna (99.1% akurasi).",
+                        "simple_explanation": "Frame pada detik 0.40 adalah salinan persis dari frame pada detik 0.30. Ini sering digunakan untuk memperpanjang durasi video atau menyembunyikan penghapusan konten.",
+                        "sift_analysis": {
+                            "success": true,
+                            "total_keypoints_img1": 3137,
+                            "total_keypoints_img2": 3279,
+                            "total_matches": 3137,
+                            "good_matches": 2231,
+                            "match_quality": "excellent",
+                            "inliers": 2212,
+                            "outliers": 19,
+                            "inlier_ratio": 0.9914836396234872,
+                            "homography_determinant": 0.9999351772185491,
+                            "estimated_scale": 0.9999675880840084,
+                            "transformation_type": "rigid",
+                            "visualization_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000003_orig_vs_frame_000004_orig.jpg",
+                            "heatmap_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000003_orig_vs_frame_000004_orig.jpg"
+                        },
+                        "implications": "Duplikasi frame dapat mengindikasikan: (1) Usaha memperpanjang durasi, (2) Menutupi frame yang dihapus, (3) Teknik editing untuk transisi"
+                    }
+                },
+                "visualizations": {
+                    "sift_matches": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000000_orig_vs_frame_000001_orig.jpg",
+                    "sift_heatmap": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000000_orig_vs_frame_000001_orig.jpg"
+                },
+                "duration": 0.30000000000000004,
+                "severity_score": 0.72,
+                "aggregated_metrics": {
+                    "source_frame": {
+                        "mean": 1.5,
+                        "max": 3,
+                        "min": 0,
+                        "std": 1.118033988749895
+                    },
+                    "ssim_to_source": {
+                        "mean": 0.9689,
+                        "max": 0.97,
+                        "min": 0.967,
+                        "std": 0.0012103718436910224
+                    },
+                    "sift_inliers": {
+                        "mean": 2200.5,
+                        "max": 2401,
+                        "min": 2084,
+                        "std": 125.52390210633192
+                    },
+                    "sift_good_matches": {
+                        "mean": 2215.0,
+                        "max": 2413,
+                        "min": 2096,
+                        "std": 125.1459148354432
+                    },
+                    "sift_inlier_ratio": {
+                        "mean": 0.9932500000000001,
+                        "max": 0.995,
+                        "min": 0.991,
+                        "std": 0.0014790199457749055
+                    }
+                }
+            },
+            {
+                "event": "anomaly_duplication",
+                "start_frame": 8,
+                "end_frame": 8,
+                "start_ts": 0.8,
+                "end_ts": 0.8,
+                "frame_count": 1,
+                "confidence": "SANGAT TINGGI",
+                "reasons": "Duplikasi dari frame 7",
+                "metrics": {
+                    "source_frame": 7,
+                    "ssim_to_source": 0.9601,
+                    "sift_inliers": 1765,
+                    "sift_good_matches": 1788,
+                    "sift_inlier_ratio": 0.987
+                },
+                "all_metrics": [
+                    {
+                        "source_frame": 7,
+                        "ssim_to_source": 0.9601,
+                        "sift_inliers": 1765,
+                        "sift_good_matches": 1788,
+                        "sift_inlier_ratio": 0.987
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000008_orig.jpg",
+                "ela_path": null,
+                "sift_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000007_orig_vs_frame_000008_orig.jpg",
+                "explanations": {
+                    "duplication": {
+                        "type": "frame_duplication",
+                        "duplicate_frame": 8,
+                        "source_frame": 7,
+                        "timestamp_duplicate": 0.8,
+                        "timestamp_source": 0.7,
+                        "time_gap": 0.10000000000000009,
+                        "confidence": "very_high",
+                        "technical_explanation": "Frame 8 adalah duplikasi dari frame 7 dengan 1765 titik fitur yang cocok sempurna (98.7% akurasi).",
+                        "simple_explanation": "Frame pada detik 0.80 adalah salinan persis dari frame pada detik 0.70. Ini sering digunakan untuk memperpanjang durasi video atau menyembunyikan penghapusan konten.",
+                        "sift_analysis": {
+                            "success": true,
+                            "total_keypoints_img1": 2805,
+                            "total_keypoints_img2": 2851,
+                            "total_matches": 2805,
+                            "good_matches": 1788,
+                            "match_quality": "excellent",
+                            "inliers": 1765,
+                            "outliers": 23,
+                            "inlier_ratio": 0.9871364653243848,
+                            "homography_determinant": 1.0000812712934684,
+                            "estimated_scale": 1.00004063482114,
+                            "transformation_type": "rigid",
+                            "visualization_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000007_orig_vs_frame_000008_orig.jpg",
+                            "heatmap_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000007_orig_vs_frame_000008_orig.jpg"
+                        },
+                        "implications": "Duplikasi frame dapat mengindikasikan: (1) Usaha memperpanjang durasi, (2) Menutupi frame yang dihapus, (3) Teknik editing untuk transisi"
+                    }
+                },
+                "visualizations": {
+                    "sift_matches": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000007_orig_vs_frame_000008_orig.jpg",
+                    "sift_heatmap": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000007_orig_vs_frame_000008_orig.jpg"
+                },
+                "duration": 0.0,
+                "severity_score": 0.72,
+                "aggregated_metrics": {
+                    "source_frame": {
+                        "mean": 7.0,
+                        "max": 7,
+                        "min": 7,
+                        "std": 0.0
+                    },
+                    "ssim_to_source": {
+                        "mean": 0.9601,
+                        "max": 0.9601,
+                        "min": 0.9601,
+                        "std": 0.0
+                    },
+                    "sift_inliers": {
+                        "mean": 1765.0,
+                        "max": 1765,
+                        "min": 1765,
+                        "std": 0.0
+                    },
+                    "sift_good_matches": {
+                        "mean": 1788.0,
+                        "max": 1788,
+                        "min": 1788,
+                        "std": 0.0
+                    },
+                    "sift_inlier_ratio": {
+                        "mean": 0.987,
+                        "max": 0.987,
+                        "min": 0.987,
+                        "std": 0.0
+                    }
+                }
+            },
+            {
+                "event": "anomaly_duplication",
+                "start_frame": 10,
+                "end_frame": 10,
+                "start_ts": 1.0,
+                "end_ts": 1.0,
+                "frame_count": 1,
+                "confidence": "SANGAT TINGGI",
+                "reasons": "Duplikasi dari frame 9",
+                "metrics": {
+                    "source_frame": 9,
+                    "ssim_to_source": 0.9566,
+                    "sift_inliers": 1940,
+                    "sift_good_matches": 1969,
+                    "sift_inlier_ratio": 0.985
+                },
+                "all_metrics": [
+                    {
+                        "source_frame": 9,
+                        "ssim_to_source": 0.9566,
+                        "sift_inliers": 1940,
+                        "sift_good_matches": 1969,
+                        "sift_inlier_ratio": 0.985
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000010_orig.jpg",
+                "ela_path": null,
+                "sift_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000009_orig_vs_frame_000010_orig.jpg",
+                "explanations": {
+                    "duplication": {
+                        "type": "frame_duplication",
+                        "duplicate_frame": 10,
+                        "source_frame": 9,
+                        "timestamp_duplicate": 1.0,
+                        "timestamp_source": 0.9,
+                        "time_gap": 0.09999999999999998,
+                        "confidence": "very_high",
+                        "technical_explanation": "Frame 10 adalah duplikasi dari frame 9 dengan 1940 titik fitur yang cocok sempurna (98.5% akurasi).",
+                        "simple_explanation": "Frame pada detik 1.00 adalah salinan persis dari frame pada detik 0.90. Ini sering digunakan untuk memperpanjang durasi video atau menyembunyikan penghapusan konten.",
+                        "sift_analysis": {
+                            "success": true,
+                            "total_keypoints_img1": 2838,
+                            "total_keypoints_img2": 3023,
+                            "total_matches": 2838,
+                            "good_matches": 1969,
+                            "match_quality": "excellent",
+                            "inliers": 1940,
+                            "outliers": 29,
+                            "inlier_ratio": 0.9852717115286947,
+                            "homography_determinant": 0.9997291331053756,
+                            "estimated_scale": 0.9998645573803362,
+                            "transformation_type": "rigid",
+                            "visualization_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000009_orig_vs_frame_000010_orig.jpg",
+                            "heatmap_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000009_orig_vs_frame_000010_orig.jpg"
+                        },
+                        "implications": "Duplikasi frame dapat mengindikasikan: (1) Usaha memperpanjang durasi, (2) Menutupi frame yang dihapus, (3) Teknik editing untuk transisi"
+                    }
+                },
+                "visualizations": {
+                    "sift_matches": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000009_orig_vs_frame_000010_orig.jpg",
+                    "sift_heatmap": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000009_orig_vs_frame_000010_orig.jpg"
+                },
+                "duration": 0.0,
+                "severity_score": 0.72,
+                "aggregated_metrics": {
+                    "source_frame": {
+                        "mean": 9.0,
+                        "max": 9,
+                        "min": 9,
+                        "std": 0.0
+                    },
+                    "ssim_to_source": {
+                        "mean": 0.9566,
+                        "max": 0.9566,
+                        "min": 0.9566,
+                        "std": 0.0
+                    },
+                    "sift_inliers": {
+                        "mean": 1940.0,
+                        "max": 1940,
+                        "min": 1940,
+                        "std": 0.0
+                    },
+                    "sift_good_matches": {
+                        "mean": 1969.0,
+                        "max": 1969,
+                        "min": 1969,
+                        "std": 0.0
+                    },
+                    "sift_inlier_ratio": {
+                        "mean": 0.985,
+                        "max": 0.985,
+                        "min": 0.985,
+                        "std": 0.0
+                    }
+                }
+            },
+            {
+                "event": "anomaly_discontinuity",
+                "start_frame": 14,
+                "end_frame": 14,
+                "start_ts": 1.4,
+                "end_ts": 1.4,
+                "frame_count": 1,
+                "confidence": "RENDAH",
+                "reasons": "Perubahan Adegan (dari K-Means)",
+                "metrics": {
+                    "color_cluster_jump": "0 \u2192 5"
+                },
+                "all_metrics": [
+                    {
+                        "color_cluster_jump": "0 \u2192 5"
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000014_orig.jpg",
+                "ela_path": null,
+                "sift_path": null,
+                "explanations": {
+                    "scene_change": {
+                        "type": "scene_change",
+                        "frame_index": 14,
+                        "timestamp": 1.4,
+                        "technical_explanation": "Perubahan dari klaster warna 0 ke 5.",
+                        "simple_explanation": "Terjadi perubahan adegan atau sudut pandang kamera.",
+                        "metrics": {
+                            "from_cluster": 0,
+                            "to_cluster": 5
+                        }
+                    }
+                },
+                "visualizations": {},
+                "duration": 0.0,
+                "severity_score": 0.3,
+                "aggregated_metrics": {}
+            },
+            {
+                "event": "anomaly_discontinuity",
+                "start_frame": 22,
+                "end_frame": 22,
+                "start_ts": 2.2,
+                "end_ts": 2.2,
+                "frame_count": 1,
+                "confidence": "RENDAH",
+                "reasons": "Perubahan Adegan (dari K-Means)",
+                "metrics": {
+                    "color_cluster_jump": "5 \u2192 6"
+                },
+                "all_metrics": [
+                    {
+                        "color_cluster_jump": "5 \u2192 6"
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000022_orig.jpg",
+                "ela_path": null,
+                "sift_path": null,
+                "explanations": {
+                    "scene_change": {
+                        "type": "scene_change",
+                        "frame_index": 22,
+                        "timestamp": 2.2,
+                        "technical_explanation": "Perubahan dari klaster warna 5 ke 6.",
+                        "simple_explanation": "Terjadi perubahan adegan atau sudut pandang kamera.",
+                        "metrics": {
+                            "from_cluster": 5,
+                            "to_cluster": 6
+                        }
+                    }
+                },
+                "visualizations": {},
+                "duration": 0.0,
+                "severity_score": 0.3,
+                "aggregated_metrics": {}
+            },
+            {
+                "event": "anomaly_discontinuity",
+                "start_frame": 34,
+                "end_frame": 34,
+                "start_ts": 3.4,
+                "end_ts": 3.4,
+                "frame_count": 1,
+                "confidence": "RENDAH",
+                "reasons": "Perubahan Adegan (dari K-Means)",
+                "metrics": {
+                    "color_cluster_jump": "6 \u2192 2"
+                },
+                "all_metrics": [
+                    {
+                        "color_cluster_jump": "6 \u2192 2"
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000034_orig.jpg",
+                "ela_path": null,
+                "sift_path": null,
+                "explanations": {
+                    "scene_change": {
+                        "type": "scene_change",
+                        "frame_index": 34,
+                        "timestamp": 3.4,
+                        "technical_explanation": "Perubahan dari klaster warna 6 ke 2.",
+                        "simple_explanation": "Terjadi perubahan adegan atau sudut pandang kamera.",
+                        "metrics": {
+                            "from_cluster": 6,
+                            "to_cluster": 2
+                        }
+                    }
+                },
+                "visualizations": {},
+                "duration": 0.0,
+                "severity_score": 0.3,
+                "aggregated_metrics": {}
+            },
+            {
+                "event": "anomaly_discontinuity",
+                "start_frame": 38,
+                "end_frame": 38,
+                "start_ts": 3.8,
+                "end_ts": 3.8,
+                "frame_count": 1,
+                "confidence": "RENDAH",
+                "reasons": "Perubahan Adegan (dari K-Means)",
+                "metrics": {
+                    "color_cluster_jump": "2 \u2192 4"
+                },
+                "all_metrics": [
+                    {
+                        "color_cluster_jump": "2 \u2192 4"
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000038_orig.jpg",
+                "ela_path": null,
+                "sift_path": null,
+                "explanations": {
+                    "scene_change": {
+                        "type": "scene_change",
+                        "frame_index": 38,
+                        "timestamp": 3.8,
+                        "technical_explanation": "Perubahan dari klaster warna 2 ke 4.",
+                        "simple_explanation": "Terjadi perubahan adegan atau sudut pandang kamera.",
+                        "metrics": {
+                            "from_cluster": 2,
+                            "to_cluster": 4
+                        }
+                    }
+                },
+                "visualizations": {},
+                "duration": 0.0,
+                "severity_score": 0.3,
+                "aggregated_metrics": {}
+            },
+            {
+                "event": "anomaly_discontinuity",
+                "start_frame": 43,
+                "end_frame": 43,
+                "start_ts": 4.3,
+                "end_ts": 4.3,
+                "frame_count": 1,
+                "confidence": "RENDAH",
+                "reasons": "Perubahan Adegan (dari K-Means)",
+                "metrics": {
+                    "color_cluster_jump": "4 \u2192 7"
+                },
+                "all_metrics": [
+                    {
+                        "color_cluster_jump": "4 \u2192 7"
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000043_orig.jpg",
+                "ela_path": null,
+                "sift_path": null,
+                "explanations": {
+                    "scene_change": {
+                        "type": "scene_change",
+                        "frame_index": 43,
+                        "timestamp": 4.3,
+                        "technical_explanation": "Perubahan dari klaster warna 4 ke 7.",
+                        "simple_explanation": "Terjadi perubahan adegan atau sudut pandang kamera.",
+                        "metrics": {
+                            "from_cluster": 4,
+                            "to_cluster": 7
+                        }
+                    }
+                },
+                "visualizations": {},
+                "duration": 0.0,
+                "severity_score": 0.3,
+                "aggregated_metrics": {}
+            },
+            {
+                "event": "anomaly_duplication",
+                "start_frame": 48,
+                "end_frame": 48,
+                "start_ts": 4.8,
+                "end_ts": 4.8,
+                "frame_count": 1,
+                "confidence": "SANGAT TINGGI",
+                "reasons": "Duplikasi dari frame 47",
+                "metrics": {
+                    "source_frame": 47,
+                    "ssim_to_source": 0.9735,
+                    "sift_inliers": 2356,
+                    "sift_good_matches": 2368,
+                    "sift_inlier_ratio": 0.995
+                },
+                "all_metrics": [
+                    {
+                        "source_frame": 47,
+                        "ssim_to_source": 0.9735,
+                        "sift_inliers": 2356,
+                        "sift_good_matches": 2368,
+                        "sift_inlier_ratio": 0.995
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000048_orig.jpg",
+                "ela_path": null,
+                "sift_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000047_orig_vs_frame_000048_orig.jpg",
+                "explanations": {
+                    "duplication": {
+                        "type": "frame_duplication",
+                        "duplicate_frame": 48,
+                        "source_frame": 47,
+                        "timestamp_duplicate": 4.8,
+                        "timestamp_source": 4.7,
+                        "time_gap": 0.09999999999999964,
+                        "confidence": "very_high",
+                        "technical_explanation": "Frame 48 adalah duplikasi dari frame 47 dengan 2356 titik fitur yang cocok sempurna (99.5% akurasi).",
+                        "simple_explanation": "Frame pada detik 4.80 adalah salinan persis dari frame pada detik 4.70. Ini sering digunakan untuk memperpanjang durasi video atau menyembunyikan penghapusan konten.",
+                        "sift_analysis": {
+                            "success": true,
+                            "total_keypoints_img1": 3158,
+                            "total_keypoints_img2": 3306,
+                            "total_matches": 3158,
+                            "good_matches": 2368,
+                            "match_quality": "excellent",
+                            "inliers": 2356,
+                            "outliers": 12,
+                            "inlier_ratio": 0.9949324324324325,
+                            "homography_determinant": 0.9997076421860522,
+                            "estimated_scale": 0.9998538104073276,
+                            "transformation_type": "rigid",
+                            "visualization_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000047_orig_vs_frame_000048_orig.jpg",
+                            "heatmap_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000047_orig_vs_frame_000048_orig.jpg"
+                        },
+                        "implications": "Duplikasi frame dapat mengindikasikan: (1) Usaha memperpanjang durasi, (2) Menutupi frame yang dihapus, (3) Teknik editing untuk transisi"
+                    }
+                },
+                "visualizations": {
+                    "sift_matches": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000047_orig_vs_frame_000048_orig.jpg",
+                    "sift_heatmap": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000047_orig_vs_frame_000048_orig.jpg"
+                },
+                "duration": 0.0,
+                "severity_score": 0.72,
+                "aggregated_metrics": {
+                    "source_frame": {
+                        "mean": 47.0,
+                        "max": 47,
+                        "min": 47,
+                        "std": 0.0
+                    },
+                    "ssim_to_source": {
+                        "mean": 0.9735,
+                        "max": 0.9735,
+                        "min": 0.9735,
+                        "std": 0.0
+                    },
+                    "sift_inliers": {
+                        "mean": 2356.0,
+                        "max": 2356,
+                        "min": 2356,
+                        "std": 0.0
+                    },
+                    "sift_good_matches": {
+                        "mean": 2368.0,
+                        "max": 2368,
+                        "min": 2368,
+                        "std": 0.0
+                    },
+                    "sift_inlier_ratio": {
+                        "mean": 0.995,
+                        "max": 0.995,
+                        "min": 0.995,
+                        "std": 0.0
+                    }
+                }
+            },
+            {
+                "event": "anomaly_discontinuity",
+                "start_frame": 50,
+                "end_frame": 50,
+                "start_ts": 5.0,
+                "end_ts": 5.0,
+                "frame_count": 1,
+                "confidence": "RENDAH",
+                "reasons": "Perubahan Adegan (dari K-Means)",
+                "metrics": {
+                    "color_cluster_jump": "7 \u2192 0"
+                },
+                "all_metrics": [
+                    {
+                        "color_cluster_jump": "7 \u2192 0"
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000050_orig.jpg",
+                "ela_path": null,
+                "sift_path": null,
+                "explanations": {
+                    "scene_change": {
+                        "type": "scene_change",
+                        "frame_index": 50,
+                        "timestamp": 5.0,
+                        "technical_explanation": "Perubahan dari klaster warna 7 ke 0.",
+                        "simple_explanation": "Terjadi perubahan adegan atau sudut pandang kamera.",
+                        "metrics": {
+                            "from_cluster": 7,
+                            "to_cluster": 0
+                        }
+                    }
+                },
+                "visualizations": {},
+                "duration": 0.0,
+                "severity_score": 0.3,
+                "aggregated_metrics": {}
+            },
+            {
+                "event": "anomaly_duplication",
+                "start_frame": 51,
+                "end_frame": 53,
+                "start_ts": 5.1,
+                "end_ts": 5.3,
+                "frame_count": 3,
+                "confidence": "SANGAT TINGGI",
+                "reasons": "Duplikasi dari frame 50",
+                "metrics": {
+                    "source_frame": 50,
+                    "ssim_to_source": 0.9804,
+                    "sift_inliers": 2224,
+                    "sift_good_matches": 2340,
+                    "sift_inlier_ratio": 0.95
+                },
+                "all_metrics": [
+                    {
+                        "source_frame": 50,
+                        "ssim_to_source": 0.9804,
+                        "sift_inliers": 2224,
+                        "sift_good_matches": 2340,
+                        "sift_inlier_ratio": 0.95
+                    },
+                    {
+                        "source_frame": 51,
+                        "ssim_to_source": 0.9806,
+                        "sift_inliers": 2209,
+                        "sift_good_matches": 2221,
+                        "sift_inlier_ratio": 0.995
+                    },
+                    {
+                        "source_frame": 52,
+                        "ssim_to_source": 0.9911,
+                        "sift_inliers": 2771,
+                        "sift_good_matches": 2775,
+                        "sift_inlier_ratio": 0.999
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000051_orig.jpg",
+                "ela_path": null,
+                "sift_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000050_orig_vs_frame_000051_orig.jpg",
+                "explanations": {
+                    "duplication": {
+                        "type": "frame_duplication",
+                        "duplicate_frame": 53,
+                        "source_frame": 52,
+                        "timestamp_duplicate": 5.3,
+                        "timestamp_source": 5.2,
+                        "time_gap": 0.09999999999999964,
+                        "confidence": "very_high",
+                        "technical_explanation": "Frame 53 adalah duplikasi dari frame 52 dengan 2771 titik fitur yang cocok sempurna (99.9% akurasi).",
+                        "simple_explanation": "Frame pada detik 5.30 adalah salinan persis dari frame pada detik 5.20. Ini sering digunakan untuk memperpanjang durasi video atau menyembunyikan penghapusan konten.",
+                        "sift_analysis": {
+                            "success": true,
+                            "total_keypoints_img1": 2968,
+                            "total_keypoints_img2": 2959,
+                            "total_matches": 2968,
+                            "good_matches": 2775,
+                            "match_quality": "excellent",
+                            "inliers": 2771,
+                            "outliers": 4,
+                            "inlier_ratio": 0.9985585585585586,
+                            "homography_determinant": 0.9999382262611191,
+                            "estimated_scale": 0.9999691126535455,
+                            "transformation_type": "rigid",
+                            "visualization_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000052_orig_vs_frame_000053_orig.jpg",
+                            "heatmap_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000052_orig_vs_frame_000053_orig.jpg"
+                        },
+                        "implications": "Duplikasi frame dapat mengindikasikan: (1) Usaha memperpanjang durasi, (2) Menutupi frame yang dihapus, (3) Teknik editing untuk transisi"
+                    }
+                },
+                "visualizations": {
+                    "sift_matches": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000050_orig_vs_frame_000051_orig.jpg",
+                    "sift_heatmap": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000050_orig_vs_frame_000051_orig.jpg"
+                },
+                "duration": 0.20000000000000018,
+                "severity_score": 0.72,
+                "aggregated_metrics": {
+                    "source_frame": {
+                        "mean": 51.0,
+                        "max": 52,
+                        "min": 50,
+                        "std": 0.816496580927726
+                    },
+                    "ssim_to_source": {
+                        "mean": 0.9840333333333334,
+                        "max": 0.9911,
+                        "min": 0.9804,
+                        "std": 0.004997554957732359
+                    },
+                    "sift_inliers": {
+                        "mean": 2401.3333333333335,
+                        "max": 2771,
+                        "min": 2209,
+                        "std": 261.46552778946256
+                    },
+                    "sift_good_matches": {
+                        "mean": 2445.3333333333335,
+                        "max": 2775,
+                        "min": 2221,
+                        "std": 238.11808461816213
+                    },
+                    "sift_inlier_ratio": {
+                        "mean": 0.9813333333333333,
+                        "max": 0.999,
+                        "min": 0.95,
+                        "std": 0.022216110270602198
+                    }
+                }
+            },
+            {
+                "event": "anomaly_duplication",
+                "start_frame": 55,
+                "end_frame": 55,
+                "start_ts": 5.5,
+                "end_ts": 5.5,
+                "frame_count": 1,
+                "confidence": "SANGAT TINGGI",
+                "reasons": "Duplikasi dari frame 54",
+                "metrics": {
+                    "source_frame": 54,
+                    "ssim_to_source": 0.9755,
+                    "sift_inliers": 2040,
+                    "sift_good_matches": 2047,
+                    "sift_inlier_ratio": 0.997
+                },
+                "all_metrics": [
+                    {
+                        "source_frame": 54,
+                        "ssim_to_source": 0.9755,
+                        "sift_inliers": 2040,
+                        "sift_good_matches": 2047,
+                        "sift_inlier_ratio": 0.997
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000055_orig.jpg",
+                "ela_path": null,
+                "sift_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000054_orig_vs_frame_000055_orig.jpg",
+                "explanations": {
+                    "duplication": {
+                        "type": "frame_duplication",
+                        "duplicate_frame": 55,
+                        "source_frame": 54,
+                        "timestamp_duplicate": 5.5,
+                        "timestamp_source": 5.4,
+                        "time_gap": 0.09999999999999964,
+                        "confidence": "very_high",
+                        "technical_explanation": "Frame 55 adalah duplikasi dari frame 54 dengan 2040 titik fitur yang cocok sempurna (99.7% akurasi).",
+                        "simple_explanation": "Frame pada detik 5.50 adalah salinan persis dari frame pada detik 5.40. Ini sering digunakan untuk memperpanjang durasi video atau menyembunyikan penghapusan konten.",
+                        "sift_analysis": {
+                            "success": true,
+                            "total_keypoints_img1": 2910,
+                            "total_keypoints_img2": 2822,
+                            "total_matches": 2910,
+                            "good_matches": 2047,
+                            "match_quality": "excellent",
+                            "inliers": 2040,
+                            "outliers": 7,
+                            "inlier_ratio": 0.9965803615046409,
+                            "homography_determinant": 1.0000268019103784,
+                            "estimated_scale": 1.0000134008653976,
+                            "transformation_type": "rigid",
+                            "visualization_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000054_orig_vs_frame_000055_orig.jpg",
+                            "heatmap_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000054_orig_vs_frame_000055_orig.jpg"
+                        },
+                        "implications": "Duplikasi frame dapat mengindikasikan: (1) Usaha memperpanjang durasi, (2) Menutupi frame yang dihapus, (3) Teknik editing untuk transisi"
+                    }
+                },
+                "visualizations": {
+                    "sift_matches": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000054_orig_vs_frame_000055_orig.jpg",
+                    "sift_heatmap": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000054_orig_vs_frame_000055_orig.jpg"
+                },
+                "duration": 0.0,
+                "severity_score": 0.72,
+                "aggregated_metrics": {
+                    "source_frame": {
+                        "mean": 54.0,
+                        "max": 54,
+                        "min": 54,
+                        "std": 0.0
+                    },
+                    "ssim_to_source": {
+                        "mean": 0.9755,
+                        "max": 0.9755,
+                        "min": 0.9755,
+                        "std": 0.0
+                    },
+                    "sift_inliers": {
+                        "mean": 2040.0,
+                        "max": 2040,
+                        "min": 2040,
+                        "std": 0.0
+                    },
+                    "sift_good_matches": {
+                        "mean": 2047.0,
+                        "max": 2047,
+                        "min": 2047,
+                        "std": 0.0
+                    },
+                    "sift_inlier_ratio": {
+                        "mean": 0.997,
+                        "max": 0.997,
+                        "min": 0.997,
+                        "std": 0.0
+                    }
+                }
+            },
+            {
+                "event": "anomaly_duplication",
+                "start_frame": 58,
+                "end_frame": 58,
+                "start_ts": 5.8,
+                "end_ts": 5.8,
+                "frame_count": 1,
+                "confidence": "SANGAT TINGGI",
+                "reasons": "Duplikasi dari frame 57",
+                "metrics": {
+                    "source_frame": 57,
+                    "ssim_to_source": 0.965,
+                    "sift_inliers": 1719,
+                    "sift_good_matches": 1733,
+                    "sift_inlier_ratio": 0.992
+                },
+                "all_metrics": [
+                    {
+                        "source_frame": 57,
+                        "ssim_to_source": 0.965,
+                        "sift_inliers": 1719,
+                        "sift_good_matches": 1733,
+                        "sift_inlier_ratio": 0.992
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000058_orig.jpg",
+                "ela_path": null,
+                "sift_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000057_orig_vs_frame_000058_orig.jpg",
+                "explanations": {
+                    "duplication": {
+                        "type": "frame_duplication",
+                        "duplicate_frame": 58,
+                        "source_frame": 57,
+                        "timestamp_duplicate": 5.8,
+                        "timestamp_source": 5.7,
+                        "time_gap": 0.09999999999999964,
+                        "confidence": "very_high",
+                        "technical_explanation": "Frame 58 adalah duplikasi dari frame 57 dengan 1719 titik fitur yang cocok sempurna (99.2% akurasi).",
+                        "simple_explanation": "Frame pada detik 5.80 adalah salinan persis dari frame pada detik 5.70. Ini sering digunakan untuk memperpanjang durasi video atau menyembunyikan penghapusan konten.",
+                        "sift_analysis": {
+                            "success": true,
+                            "total_keypoints_img1": 2571,
+                            "total_keypoints_img2": 2616,
+                            "total_matches": 2571,
+                            "good_matches": 1733,
+                            "match_quality": "excellent",
+                            "inliers": 1719,
+                            "outliers": 14,
+                            "inlier_ratio": 0.9919215233698788,
+                            "homography_determinant": 0.9996485941787058,
+                            "estimated_scale": 0.9998242816508838,
+                            "transformation_type": "rigid",
+                            "visualization_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000057_orig_vs_frame_000058_orig.jpg",
+                            "heatmap_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000057_orig_vs_frame_000058_orig.jpg"
+                        },
+                        "implications": "Duplikasi frame dapat mengindikasikan: (1) Usaha memperpanjang durasi, (2) Menutupi frame yang dihapus, (3) Teknik editing untuk transisi"
+                    }
+                },
+                "visualizations": {
+                    "sift_matches": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000057_orig_vs_frame_000058_orig.jpg",
+                    "sift_heatmap": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000057_orig_vs_frame_000058_orig.jpg"
+                },
+                "duration": 0.0,
+                "severity_score": 0.72,
+                "aggregated_metrics": {
+                    "source_frame": {
+                        "mean": 57.0,
+                        "max": 57,
+                        "min": 57,
+                        "std": 0.0
+                    },
+                    "ssim_to_source": {
+                        "mean": 0.965,
+                        "max": 0.965,
+                        "min": 0.965,
+                        "std": 0.0
+                    },
+                    "sift_inliers": {
+                        "mean": 1719.0,
+                        "max": 1719,
+                        "min": 1719,
+                        "std": 0.0
+                    },
+                    "sift_good_matches": {
+                        "mean": 1733.0,
+                        "max": 1733,
+                        "min": 1733,
+                        "std": 0.0
+                    },
+                    "sift_inlier_ratio": {
+                        "mean": 0.992,
+                        "max": 0.992,
+                        "min": 0.992,
+                        "std": 0.0
+                    }
+                }
+            },
+            {
+                "event": "anomaly_duplication",
+                "start_frame": 60,
+                "end_frame": 60,
+                "start_ts": 6.0,
+                "end_ts": 6.0,
+                "frame_count": 1,
+                "confidence": "SANGAT TINGGI",
+                "reasons": "Duplikasi dari frame 59",
+                "metrics": {
+                    "source_frame": 59,
+                    "ssim_to_source": 0.9534,
+                    "sift_inliers": 1710,
+                    "sift_good_matches": 1736,
+                    "sift_inlier_ratio": 0.985
+                },
+                "all_metrics": [
+                    {
+                        "source_frame": 59,
+                        "ssim_to_source": 0.9534,
+                        "sift_inliers": 1710,
+                        "sift_good_matches": 1736,
+                        "sift_inlier_ratio": 0.985
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000060_orig.jpg",
+                "ela_path": null,
+                "sift_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000059_orig_vs_frame_000060_orig.jpg",
+                "explanations": {
+                    "duplication": {
+                        "type": "frame_duplication",
+                        "duplicate_frame": 60,
+                        "source_frame": 59,
+                        "timestamp_duplicate": 6.0,
+                        "timestamp_source": 5.9,
+                        "time_gap": 0.09999999999999964,
+                        "confidence": "very_high",
+                        "technical_explanation": "Frame 60 adalah duplikasi dari frame 59 dengan 1710 titik fitur yang cocok sempurna (98.5% akurasi).",
+                        "simple_explanation": "Frame pada detik 6.00 adalah salinan persis dari frame pada detik 5.90. Ini sering digunakan untuk memperpanjang durasi video atau menyembunyikan penghapusan konten.",
+                        "sift_analysis": {
+                            "success": true,
+                            "total_keypoints_img1": 2641,
+                            "total_keypoints_img2": 2843,
+                            "total_matches": 2641,
+                            "good_matches": 1736,
+                            "match_quality": "excellent",
+                            "inliers": 1710,
+                            "outliers": 26,
+                            "inlier_ratio": 0.9850230414746544,
+                            "homography_determinant": 1.0002355886048182,
+                            "estimated_scale": 1.0001177873654774,
+                            "transformation_type": "rigid",
+                            "visualization_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000059_orig_vs_frame_000060_orig.jpg",
+                            "heatmap_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000059_orig_vs_frame_000060_orig.jpg"
+                        },
+                        "implications": "Duplikasi frame dapat mengindikasikan: (1) Usaha memperpanjang durasi, (2) Menutupi frame yang dihapus, (3) Teknik editing untuk transisi"
+                    }
+                },
+                "visualizations": {
+                    "sift_matches": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000059_orig_vs_frame_000060_orig.jpg",
+                    "sift_heatmap": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000059_orig_vs_frame_000060_orig.jpg"
+                },
+                "duration": 0.0,
+                "severity_score": 0.72,
+                "aggregated_metrics": {
+                    "source_frame": {
+                        "mean": 59.0,
+                        "max": 59,
+                        "min": 59,
+                        "std": 0.0
+                    },
+                    "ssim_to_source": {
+                        "mean": 0.9534,
+                        "max": 0.9534,
+                        "min": 0.9534,
+                        "std": 0.0
+                    },
+                    "sift_inliers": {
+                        "mean": 1710.0,
+                        "max": 1710,
+                        "min": 1710,
+                        "std": 0.0
+                    },
+                    "sift_good_matches": {
+                        "mean": 1736.0,
+                        "max": 1736,
+                        "min": 1736,
+                        "std": 0.0
+                    },
+                    "sift_inlier_ratio": {
+                        "mean": 0.985,
+                        "max": 0.985,
+                        "min": 0.985,
+                        "std": 0.0
+                    }
+                }
+            },
+            {
+                "event": "anomaly_discontinuity",
+                "start_frame": 64,
+                "end_frame": 64,
+                "start_ts": 6.4,
+                "end_ts": 6.4,
+                "frame_count": 1,
+                "confidence": "RENDAH",
+                "reasons": "Perubahan Adegan (dari K-Means)",
+                "metrics": {
+                    "color_cluster_jump": "0 \u2192 5"
+                },
+                "all_metrics": [
+                    {
+                        "color_cluster_jump": "0 \u2192 5"
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000064_orig.jpg",
+                "ela_path": null,
+                "sift_path": null,
+                "explanations": {
+                    "scene_change": {
+                        "type": "scene_change",
+                        "frame_index": 64,
+                        "timestamp": 6.4,
+                        "technical_explanation": "Perubahan dari klaster warna 0 ke 5.",
+                        "simple_explanation": "Terjadi perubahan adegan atau sudut pandang kamera.",
+                        "metrics": {
+                            "from_cluster": 0,
+                            "to_cluster": 5
+                        }
+                    }
+                },
+                "visualizations": {},
+                "duration": 0.0,
+                "severity_score": 0.3,
+                "aggregated_metrics": {}
+            },
+            {
+                "event": "anomaly_discontinuity",
+                "start_frame": 72,
+                "end_frame": 72,
+                "start_ts": 7.2,
+                "end_ts": 7.2,
+                "frame_count": 1,
+                "confidence": "RENDAH",
+                "reasons": "Perubahan Adegan (dari K-Means)",
+                "metrics": {
+                    "color_cluster_jump": "5 \u2192 6"
+                },
+                "all_metrics": [
+                    {
+                        "color_cluster_jump": "5 \u2192 6"
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000072_orig.jpg",
+                "ela_path": null,
+                "sift_path": null,
+                "explanations": {
+                    "scene_change": {
+                        "type": "scene_change",
+                        "frame_index": 72,
+                        "timestamp": 7.2,
+                        "technical_explanation": "Perubahan dari klaster warna 5 ke 6.",
+                        "simple_explanation": "Terjadi perubahan adegan atau sudut pandang kamera.",
+                        "metrics": {
+                            "from_cluster": 5,
+                            "to_cluster": 6
+                        }
+                    }
+                },
+                "visualizations": {},
+                "duration": 0.0,
+                "severity_score": 0.3,
+                "aggregated_metrics": {}
+            },
+            {
+                "event": "anomaly_duplication",
+                "start_frame": 77,
+                "end_frame": 81,
+                "start_ts": 7.7,
+                "end_ts": 8.1,
+                "frame_count": 5,
+                "confidence": "SANGAT TINGGI",
+                "reasons": "Duplikasi dari frame 27",
+                "metrics": {
+                    "source_frame": 27,
+                    "ssim_to_source": 0.9513,
+                    "sift_inliers": 1914,
+                    "sift_good_matches": 1987,
+                    "sift_inlier_ratio": 0.963
+                },
+                "all_metrics": [
+                    {
+                        "source_frame": 27,
+                        "ssim_to_source": 0.9513,
+                        "sift_inliers": 1914,
+                        "sift_good_matches": 1987,
+                        "sift_inlier_ratio": 0.963
+                    },
+                    {
+                        "source_frame": 28,
+                        "ssim_to_source": 0.9514,
+                        "sift_inliers": 1989,
+                        "sift_good_matches": 2016,
+                        "sift_inlier_ratio": 0.987
+                    },
+                    {
+                        "source_frame": 29,
+                        "ssim_to_source": 0.9555,
+                        "sift_inliers": 1932,
+                        "sift_good_matches": 1958,
+                        "sift_inlier_ratio": 0.987
+                    },
+                    {
+                        "source_frame": 30,
+                        "ssim_to_source": 0.9535,
+                        "sift_inliers": 1957,
+                        "sift_good_matches": 1982,
+                        "sift_inlier_ratio": 0.987
+                    },
+                    {
+                        "source_frame": 31,
+                        "ssim_to_source": 0.9579,
+                        "sift_inliers": 1900,
+                        "sift_good_matches": 1930,
+                        "sift_inlier_ratio": 0.984
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000077_orig.jpg",
+                "ela_path": null,
+                "sift_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000027_orig_vs_frame_000077_orig.jpg",
+                "explanations": {
+                    "duplication": {
+                        "type": "frame_duplication",
+                        "duplicate_frame": 81,
+                        "source_frame": 31,
+                        "timestamp_duplicate": 8.1,
+                        "timestamp_source": 3.1,
+                        "time_gap": 5.0,
+                        "confidence": "very_high",
+                        "technical_explanation": "Frame 81 adalah duplikasi dari frame 31 dengan 1900 titik fitur yang cocok sempurna (98.4% akurasi).",
+                        "simple_explanation": "Frame pada detik 8.10 adalah salinan persis dari frame pada detik 3.10. Ini sering digunakan untuk memperpanjang durasi video atau menyembunyikan penghapusan konten.",
+                        "sift_analysis": {
+                            "success": true,
+                            "total_keypoints_img1": 2984,
+                            "total_keypoints_img2": 2990,
+                            "total_matches": 2984,
+                            "good_matches": 1930,
+                            "match_quality": "excellent",
+                            "inliers": 1900,
+                            "outliers": 30,
+                            "inlier_ratio": 0.9844559585492227,
+                            "homography_determinant": 1.0001542560780157,
+                            "estimated_scale": 1.0000771250648701,
+                            "transformation_type": "rigid",
+                            "visualization_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000031_orig_vs_frame_000081_orig.jpg",
+                            "heatmap_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000031_orig_vs_frame_000081_orig.jpg"
+                        },
+                        "implications": "Duplikasi frame dapat mengindikasikan: (1) Usaha memperpanjang durasi, (2) Menutupi frame yang dihapus, (3) Teknik editing untuk transisi"
+                    }
+                },
+                "visualizations": {
+                    "sift_matches": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000027_orig_vs_frame_000077_orig.jpg",
+                    "sift_heatmap": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000027_orig_vs_frame_000077_orig.jpg"
+                },
+                "duration": 0.39999999999999947,
+                "severity_score": 0.72,
+                "aggregated_metrics": {
+                    "source_frame": {
+                        "mean": 29.0,
+                        "max": 31,
+                        "min": 27,
+                        "std": 1.4142135623730951
+                    },
+                    "ssim_to_source": {
+                        "mean": 0.9539200000000001,
+                        "max": 0.9579,
+                        "min": 0.9513,
+                        "std": 0.0025190474390133872
+                    },
+                    "sift_inliers": {
+                        "mean": 1938.4,
+                        "max": 1989,
+                        "min": 1900,
+                        "std": 31.6771210813104
+                    },
+                    "sift_good_matches": {
+                        "mean": 1974.6,
+                        "max": 2016,
+                        "min": 1930,
+                        "std": 28.938555596297476
+                    },
+                    "sift_inlier_ratio": {
+                        "mean": 0.9815999999999999,
+                        "max": 0.987,
+                        "min": 0.963,
+                        "std": 0.009372299611087993
+                    }
+                }
+            },
+            {
+                "event": "anomaly_discontinuity",
+                "start_frame": 84,
+                "end_frame": 84,
+                "start_ts": 8.4,
+                "end_ts": 8.4,
+                "frame_count": 1,
+                "confidence": "RENDAH",
+                "reasons": "Perubahan Adegan (dari K-Means)",
+                "metrics": {
+                    "color_cluster_jump": "6 \u2192 2"
+                },
+                "all_metrics": [
+                    {
+                        "color_cluster_jump": "6 \u2192 2"
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000084_orig.jpg",
+                "ela_path": null,
+                "sift_path": null,
+                "explanations": {
+                    "scene_change": {
+                        "type": "scene_change",
+                        "frame_index": 84,
+                        "timestamp": 8.4,
+                        "technical_explanation": "Perubahan dari klaster warna 6 ke 2.",
+                        "simple_explanation": "Terjadi perubahan adegan atau sudut pandang kamera.",
+                        "metrics": {
+                            "from_cluster": 6,
+                            "to_cluster": 2
+                        }
+                    }
+                },
+                "visualizations": {},
+                "duration": 0.0,
+                "severity_score": 0.3,
+                "aggregated_metrics": {}
+            },
+            {
+                "event": "anomaly_discontinuity",
+                "start_frame": 88,
+                "end_frame": 88,
+                "start_ts": 8.8,
+                "end_ts": 8.8,
+                "frame_count": 1,
+                "confidence": "RENDAH",
+                "reasons": "Perubahan Adegan (dari K-Means)",
+                "metrics": {
+                    "color_cluster_jump": "2 \u2192 4"
+                },
+                "all_metrics": [
+                    {
+                        "color_cluster_jump": "2 \u2192 4"
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000088_orig.jpg",
+                "ela_path": null,
+                "sift_path": null,
+                "explanations": {
+                    "scene_change": {
+                        "type": "scene_change",
+                        "frame_index": 88,
+                        "timestamp": 8.8,
+                        "technical_explanation": "Perubahan dari klaster warna 2 ke 4.",
+                        "simple_explanation": "Terjadi perubahan adegan atau sudut pandang kamera.",
+                        "metrics": {
+                            "from_cluster": 2,
+                            "to_cluster": 4
+                        }
+                    }
+                },
+                "visualizations": {},
+                "duration": 0.0,
+                "severity_score": 0.3,
+                "aggregated_metrics": {}
+            },
+            {
+                "event": "anomaly_discontinuity",
+                "start_frame": 93,
+                "end_frame": 93,
+                "start_ts": 9.3,
+                "end_ts": 9.3,
+                "frame_count": 1,
+                "confidence": "RENDAH",
+                "reasons": "Perubahan Adegan (dari K-Means)",
+                "metrics": {
+                    "color_cluster_jump": "4 \u2192 7"
+                },
+                "all_metrics": [
+                    {
+                        "color_cluster_jump": "4 \u2192 7"
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000093_orig.jpg",
+                "ela_path": null,
+                "sift_path": null,
+                "explanations": {
+                    "scene_change": {
+                        "type": "scene_change",
+                        "frame_index": 93,
+                        "timestamp": 9.3,
+                        "technical_explanation": "Perubahan dari klaster warna 4 ke 7.",
+                        "simple_explanation": "Terjadi perubahan adegan atau sudut pandang kamera.",
+                        "metrics": {
+                            "from_cluster": 4,
+                            "to_cluster": 7
+                        }
+                    }
+                },
+                "visualizations": {},
+                "duration": 0.0,
+                "severity_score": 0.3,
+                "aggregated_metrics": {}
+            },
+            {
+                "event": "anomaly_discontinuity",
+                "start_frame": 99,
+                "end_frame": 99,
+                "start_ts": 9.9,
+                "end_ts": 9.9,
+                "frame_count": 1,
+                "confidence": "RENDAH",
+                "reasons": "Perubahan Adegan (dari K-Means)",
+                "metrics": {
+                    "color_cluster_jump": "7 \u2192 3"
+                },
+                "all_metrics": [
+                    {
+                        "color_cluster_jump": "7 \u2192 3"
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000099_orig.jpg",
+                "ela_path": null,
+                "sift_path": null,
+                "explanations": {
+                    "scene_change": {
+                        "type": "scene_change",
+                        "frame_index": 99,
+                        "timestamp": 9.9,
+                        "technical_explanation": "Perubahan dari klaster warna 7 ke 3.",
+                        "simple_explanation": "Terjadi perubahan adegan atau sudut pandang kamera.",
+                        "metrics": {
+                            "from_cluster": 7,
+                            "to_cluster": 3
+                        }
+                    }
+                },
+                "visualizations": {},
+                "duration": 0.0,
+                "severity_score": 0.3,
+                "aggregated_metrics": {}
+            },
+            {
+                "event": "anomaly_duplication",
+                "start_frame": 100,
+                "end_frame": 106,
+                "start_ts": 10.0,
+                "end_ts": 10.6,
+                "frame_count": 7,
+                "confidence": "SANGAT TINGGI",
+                "reasons": "Duplikasi dari frame 99",
+                "metrics": {
+                    "source_frame": 99,
+                    "ssim_to_source": 0.9774,
+                    "sift_inliers": 2290,
+                    "sift_good_matches": 2303,
+                    "sift_inlier_ratio": 0.994
+                },
+                "all_metrics": [
+                    {
+                        "source_frame": 99,
+                        "ssim_to_source": 0.9774,
+                        "sift_inliers": 2290,
+                        "sift_good_matches": 2303,
+                        "sift_inlier_ratio": 0.994
+                    },
+                    {
+                        "color_cluster_jump": "3 \u2192 1",
+                        "source_frame": 100,
+                        "ssim_to_source": 0.976,
+                        "sift_inliers": 2290,
+                        "sift_good_matches": 2304,
+                        "sift_inlier_ratio": 0.994
+                    },
+                    {
+                        "source_frame": 101,
+                        "ssim_to_source": 0.9784,
+                        "sift_inliers": 2446,
+                        "sift_good_matches": 2461,
+                        "sift_inlier_ratio": 0.994
+                    },
+                    {
+                        "source_frame": 102,
+                        "ssim_to_source": 0.9765,
+                        "sift_inliers": 2307,
+                        "sift_good_matches": 2325,
+                        "sift_inlier_ratio": 0.992
+                    },
+                    {
+                        "source_frame": 103,
+                        "ssim_to_source": 0.9757,
+                        "sift_inliers": 2248,
+                        "sift_good_matches": 2257,
+                        "sift_inlier_ratio": 0.996
+                    },
+                    {
+                        "source_frame": 104,
+                        "ssim_to_source": 0.97,
+                        "sift_inliers": 2171,
+                        "sift_good_matches": 2182,
+                        "sift_inlier_ratio": 0.995
+                    },
+                    {
+                        "source_frame": 105,
+                        "ssim_to_source": 0.9882,
+                        "sift_inliers": 2741,
+                        "sift_good_matches": 2746,
+                        "sift_inlier_ratio": 0.998
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000100_orig.jpg",
+                "ela_path": null,
+                "sift_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000099_orig_vs_frame_000100_orig.jpg",
+                "explanations": {
+                    "duplication": {
+                        "type": "frame_duplication",
+                        "duplicate_frame": 106,
+                        "source_frame": 105,
+                        "timestamp_duplicate": 10.6,
+                        "timestamp_source": 10.5,
+                        "time_gap": 0.09999999999999964,
+                        "confidence": "very_high",
+                        "technical_explanation": "Frame 106 adalah duplikasi dari frame 105 dengan 2741 titik fitur yang cocok sempurna (99.8% akurasi).",
+                        "simple_explanation": "Frame pada detik 10.60 adalah salinan persis dari frame pada detik 10.50. Ini sering digunakan untuk memperpanjang durasi video atau menyembunyikan penghapusan konten.",
+                        "sift_analysis": {
+                            "success": true,
+                            "total_keypoints_img1": 3071,
+                            "total_keypoints_img2": 3065,
+                            "total_matches": 3071,
+                            "good_matches": 2746,
+                            "match_quality": "excellent",
+                            "inliers": 2741,
+                            "outliers": 5,
+                            "inlier_ratio": 0.9981791697013839,
+                            "homography_determinant": 1.0000119626861619,
+                            "estimated_scale": 1.000005981325193,
+                            "transformation_type": "rigid",
+                            "visualization_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000105_orig_vs_frame_000106_orig.jpg",
+                            "heatmap_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000105_orig_vs_frame_000106_orig.jpg"
+                        },
+                        "implications": "Duplikasi frame dapat mengindikasikan: (1) Usaha memperpanjang durasi, (2) Menutupi frame yang dihapus, (3) Teknik editing untuk transisi"
+                    },
+                    "scene_change": {
+                        "type": "scene_change",
+                        "frame_index": 101,
+                        "timestamp": 10.1,
+                        "technical_explanation": "Perubahan dari klaster warna 3 ke 1.",
+                        "simple_explanation": "Terjadi perubahan adegan atau sudut pandang kamera.",
+                        "metrics": {
+                            "from_cluster": 3,
+                            "to_cluster": 1
+                        }
+                    }
+                },
+                "visualizations": {
+                    "sift_matches": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000099_orig_vs_frame_000100_orig.jpg",
+                    "sift_heatmap": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000099_orig_vs_frame_000100_orig.jpg"
+                },
+                "duration": 0.5999999999999996,
+                "severity_score": 0.72,
+                "aggregated_metrics": {
+                    "source_frame": {
+                        "mean": 102.0,
+                        "max": 105,
+                        "min": 99,
+                        "std": 2.0
+                    },
+                    "ssim_to_source": {
+                        "mean": 0.9774571428571429,
+                        "max": 0.9882,
+                        "min": 0.97,
+                        "std": 0.005043201121412904
+                    },
+                    "sift_inliers": {
+                        "mean": 2356.1428571428573,
+                        "max": 2741,
+                        "min": 2171,
+                        "std": 174.57166238001645
+                    },
+                    "sift_good_matches": {
+                        "mean": 2368.285714285714,
+                        "max": 2746,
+                        "min": 2182,
+                        "std": 172.63480387860406
+                    },
+                    "sift_inlier_ratio": {
+                        "mean": 0.9947142857142859,
+                        "max": 0.998,
+                        "min": 0.992,
+                        "std": 0.0017496355305594144
+                    }
+                }
+            },
+            {
+                "event": "anomaly_duplication",
+                "start_frame": 111,
+                "end_frame": 111,
+                "start_ts": 11.1,
+                "end_ts": 11.1,
+                "frame_count": 1,
+                "confidence": "SANGAT TINGGI",
+                "reasons": "Duplikasi dari frame 110",
+                "metrics": {
+                    "source_frame": 110,
+                    "ssim_to_source": 0.9506,
+                    "sift_inliers": 1713,
+                    "sift_good_matches": 1738,
+                    "sift_inlier_ratio": 0.986
+                },
+                "all_metrics": [
+                    {
+                        "source_frame": 110,
+                        "ssim_to_source": 0.9506,
+                        "sift_inliers": 1713,
+                        "sift_good_matches": 1738,
+                        "sift_inlier_ratio": 0.986
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000111_orig.jpg",
+                "ela_path": null,
+                "sift_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000110_orig_vs_frame_000111_orig.jpg",
+                "explanations": {
+                    "duplication": {
+                        "type": "frame_duplication",
+                        "duplicate_frame": 111,
+                        "source_frame": 110,
+                        "timestamp_duplicate": 11.1,
+                        "timestamp_source": 11.0,
+                        "time_gap": 0.09999999999999964,
+                        "confidence": "very_high",
+                        "technical_explanation": "Frame 111 adalah duplikasi dari frame 110 dengan 1713 titik fitur yang cocok sempurna (98.6% akurasi).",
+                        "simple_explanation": "Frame pada detik 11.10 adalah salinan persis dari frame pada detik 11.00. Ini sering digunakan untuk memperpanjang durasi video atau menyembunyikan penghapusan konten.",
+                        "sift_analysis": {
+                            "success": true,
+                            "total_keypoints_img1": 2545,
+                            "total_keypoints_img2": 2531,
+                            "total_matches": 2545,
+                            "good_matches": 1738,
+                            "match_quality": "excellent",
+                            "inliers": 1713,
+                            "outliers": 25,
+                            "inlier_ratio": 0.9856156501726122,
+                            "homography_determinant": 0.9999792244156666,
+                            "estimated_scale": 0.9999896121538796,
+                            "transformation_type": "rigid",
+                            "visualization_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000110_orig_vs_frame_000111_orig.jpg",
+                            "heatmap_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000110_orig_vs_frame_000111_orig.jpg"
+                        },
+                        "implications": "Duplikasi frame dapat mengindikasikan: (1) Usaha memperpanjang durasi, (2) Menutupi frame yang dihapus, (3) Teknik editing untuk transisi"
+                    }
+                },
+                "visualizations": {
+                    "sift_matches": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000110_orig_vs_frame_000111_orig.jpg",
+                    "sift_heatmap": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000110_orig_vs_frame_000111_orig.jpg"
+                },
+                "duration": 0.0,
+                "severity_score": 0.72,
+                "aggregated_metrics": {
+                    "source_frame": {
+                        "mean": 110.0,
+                        "max": 110,
+                        "min": 110,
+                        "std": 0.0
+                    },
+                    "ssim_to_source": {
+                        "mean": 0.9506,
+                        "max": 0.9506,
+                        "min": 0.9506,
+                        "std": 0.0
+                    },
+                    "sift_inliers": {
+                        "mean": 1713.0,
+                        "max": 1713,
+                        "min": 1713,
+                        "std": 0.0
+                    },
+                    "sift_good_matches": {
+                        "mean": 1738.0,
+                        "max": 1738,
+                        "min": 1738,
+                        "std": 0.0
+                    },
+                    "sift_inlier_ratio": {
+                        "mean": 0.986,
+                        "max": 0.986,
+                        "min": 0.986,
+                        "std": 0.0
+                    }
+                }
+            },
+            {
+                "event": "anomaly_duplication",
+                "start_frame": 123,
+                "end_frame": 123,
+                "start_ts": 12.3,
+                "end_ts": 12.3,
+                "frame_count": 1,
+                "confidence": "SANGAT TINGGI",
+                "reasons": "Duplikasi dari frame 122",
+                "metrics": {
+                    "source_frame": 122,
+                    "ssim_to_source": 0.95,
+                    "sift_inliers": 2222,
+                    "sift_good_matches": 2247,
+                    "sift_inlier_ratio": 0.989
+                },
+                "all_metrics": [
+                    {
+                        "source_frame": 122,
+                        "ssim_to_source": 0.95,
+                        "sift_inliers": 2222,
+                        "sift_good_matches": 2247,
+                        "sift_inlier_ratio": 0.989
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000123_orig.jpg",
+                "ela_path": null,
+                "sift_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000122_orig_vs_frame_000123_orig.jpg",
+                "explanations": {
+                    "duplication": {
+                        "type": "frame_duplication",
+                        "duplicate_frame": 123,
+                        "source_frame": 122,
+                        "timestamp_duplicate": 12.3,
+                        "timestamp_source": 12.2,
+                        "time_gap": 0.10000000000000142,
+                        "confidence": "very_high",
+                        "technical_explanation": "Frame 123 adalah duplikasi dari frame 122 dengan 2222 titik fitur yang cocok sempurna (98.9% akurasi).",
+                        "simple_explanation": "Frame pada detik 12.30 adalah salinan persis dari frame pada detik 12.20. Ini sering digunakan untuk memperpanjang durasi video atau menyembunyikan penghapusan konten.",
+                        "sift_analysis": {
+                            "success": true,
+                            "total_keypoints_img1": 3195,
+                            "total_keypoints_img2": 3120,
+                            "total_matches": 3195,
+                            "good_matches": 2247,
+                            "match_quality": "excellent",
+                            "inliers": 2222,
+                            "outliers": 25,
+                            "inlier_ratio": 0.9888740542946151,
+                            "homography_determinant": 0.9997824483807133,
+                            "estimated_scale": 0.9998912182736246,
+                            "transformation_type": "rigid",
+                            "visualization_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000122_orig_vs_frame_000123_orig.jpg",
+                            "heatmap_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000122_orig_vs_frame_000123_orig.jpg"
+                        },
+                        "implications": "Duplikasi frame dapat mengindikasikan: (1) Usaha memperpanjang durasi, (2) Menutupi frame yang dihapus, (3) Teknik editing untuk transisi"
+                    }
+                },
+                "visualizations": {
+                    "sift_matches": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000122_orig_vs_frame_000123_orig.jpg",
+                    "sift_heatmap": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000122_orig_vs_frame_000123_orig.jpg"
+                },
+                "duration": 0.0,
+                "severity_score": 0.72,
+                "aggregated_metrics": {
+                    "source_frame": {
+                        "mean": 122.0,
+                        "max": 122,
+                        "min": 122,
+                        "std": 0.0
+                    },
+                    "ssim_to_source": {
+                        "mean": 0.95,
+                        "max": 0.95,
+                        "min": 0.95,
+                        "std": 0.0
+                    },
+                    "sift_inliers": {
+                        "mean": 2222.0,
+                        "max": 2222,
+                        "min": 2222,
+                        "std": 0.0
+                    },
+                    "sift_good_matches": {
+                        "mean": 2247.0,
+                        "max": 2247,
+                        "min": 2247,
+                        "std": 0.0
+                    },
+                    "sift_inlier_ratio": {
+                        "mean": 0.989,
+                        "max": 0.989,
+                        "min": 0.989,
+                        "std": 0.0
+                    }
+                }
+            },
+            {
+                "event": "anomaly_discontinuity",
+                "start_frame": 124,
+                "end_frame": 124,
+                "start_ts": 12.4,
+                "end_ts": 12.4,
+                "frame_count": 1,
+                "confidence": "RENDAH",
+                "reasons": "Perubahan Adegan (dari K-Means)",
+                "metrics": {
+                    "color_cluster_jump": "1 \u2192 6"
+                },
+                "all_metrics": [
+                    {
+                        "color_cluster_jump": "1 \u2192 6"
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000124_orig.jpg",
+                "ela_path": null,
+                "sift_path": null,
+                "explanations": {
+                    "scene_change": {
+                        "type": "scene_change",
+                        "frame_index": 124,
+                        "timestamp": 12.4,
+                        "technical_explanation": "Perubahan dari klaster warna 1 ke 6.",
+                        "simple_explanation": "Terjadi perubahan adegan atau sudut pandang kamera.",
+                        "metrics": {
+                            "from_cluster": 1,
+                            "to_cluster": 6
+                        }
+                    }
+                },
+                "visualizations": {},
+                "duration": 0.0,
+                "severity_score": 0.3,
+                "aggregated_metrics": {}
+            },
+            {
+                "event": "anomaly_discontinuity",
+                "start_frame": 137,
+                "end_frame": 137,
+                "start_ts": 13.7,
+                "end_ts": 13.7,
+                "frame_count": 1,
+                "confidence": "RENDAH",
+                "reasons": "Perubahan Adegan (dari K-Means)",
+                "metrics": {
+                    "color_cluster_jump": "6 \u2192 2"
+                },
+                "all_metrics": [
+                    {
+                        "color_cluster_jump": "6 \u2192 2"
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000137_orig.jpg",
+                "ela_path": null,
+                "sift_path": null,
+                "explanations": {
+                    "scene_change": {
+                        "type": "scene_change",
+                        "frame_index": 137,
+                        "timestamp": 13.7,
+                        "technical_explanation": "Perubahan dari klaster warna 6 ke 2.",
+                        "simple_explanation": "Terjadi perubahan adegan atau sudut pandang kamera.",
+                        "metrics": {
+                            "from_cluster": 6,
+                            "to_cluster": 2
+                        }
+                    }
+                },
+                "visualizations": {},
+                "duration": 0.0,
+                "severity_score": 0.3,
+                "aggregated_metrics": {}
+            },
+            {
+                "event": "anomaly_discontinuity",
+                "start_frame": 139,
+                "end_frame": 139,
+                "start_ts": 13.9,
+                "end_ts": 13.9,
+                "frame_count": 1,
+                "confidence": "RENDAH",
+                "reasons": "Perubahan Adegan (dari K-Means)",
+                "metrics": {
+                    "color_cluster_jump": "2 \u2192 1"
+                },
+                "all_metrics": [
+                    {
+                        "color_cluster_jump": "2 \u2192 1"
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000139_orig.jpg",
+                "ela_path": null,
+                "sift_path": null,
+                "explanations": {
+                    "scene_change": {
+                        "type": "scene_change",
+                        "frame_index": 139,
+                        "timestamp": 13.9,
+                        "technical_explanation": "Perubahan dari klaster warna 2 ke 1.",
+                        "simple_explanation": "Terjadi perubahan adegan atau sudut pandang kamera.",
+                        "metrics": {
+                            "from_cluster": 2,
+                            "to_cluster": 1
+                        }
+                    }
+                },
+                "visualizations": {},
+                "duration": 0.0,
+                "severity_score": 0.3,
+                "aggregated_metrics": {}
+            },
+            {
+                "event": "anomaly_discontinuity",
+                "start_frame": 143,
+                "end_frame": 143,
+                "start_ts": 14.3,
+                "end_ts": 14.3,
+                "frame_count": 1,
+                "confidence": "RENDAH",
+                "reasons": "Perubahan Adegan (dari K-Means)",
+                "metrics": {
+                    "color_cluster_jump": "1 \u2192 3"
+                },
+                "all_metrics": [
+                    {
+                        "color_cluster_jump": "1 \u2192 3"
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000143_orig.jpg",
+                "ela_path": null,
+                "sift_path": null,
+                "explanations": {
+                    "scene_change": {
+                        "type": "scene_change",
+                        "frame_index": 143,
+                        "timestamp": 14.3,
+                        "technical_explanation": "Perubahan dari klaster warna 1 ke 3.",
+                        "simple_explanation": "Terjadi perubahan adegan atau sudut pandang kamera.",
+                        "metrics": {
+                            "from_cluster": 1,
+                            "to_cluster": 3
+                        }
+                    }
+                },
+                "visualizations": {},
+                "duration": 0.0,
+                "severity_score": 0.3,
+                "aggregated_metrics": {}
+            },
+            {
+                "event": "anomaly_duplication",
+                "start_frame": 145,
+                "end_frame": 145,
+                "start_ts": 14.5,
+                "end_ts": 14.5,
+                "frame_count": 1,
+                "confidence": "SANGAT TINGGI",
+                "reasons": "Duplikasi dari frame 144",
+                "metrics": {
+                    "source_frame": 144,
+                    "ssim_to_source": 0.9526,
+                    "sift_inliers": 1975,
+                    "sift_good_matches": 1993,
+                    "sift_inlier_ratio": 0.991
+                },
+                "all_metrics": [
+                    {
+                        "source_frame": 144,
+                        "ssim_to_source": 0.9526,
+                        "sift_inliers": 1975,
+                        "sift_good_matches": 1993,
+                        "sift_inlier_ratio": 0.991
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000145_orig.jpg",
+                "ela_path": null,
+                "sift_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000144_orig_vs_frame_000145_orig.jpg",
+                "explanations": {
+                    "duplication": {
+                        "type": "frame_duplication",
+                        "duplicate_frame": 145,
+                        "source_frame": 144,
+                        "timestamp_duplicate": 14.5,
+                        "timestamp_source": 14.4,
+                        "time_gap": 0.09999999999999964,
+                        "confidence": "very_high",
+                        "technical_explanation": "Frame 145 adalah duplikasi dari frame 144 dengan 1975 titik fitur yang cocok sempurna (99.1% akurasi).",
+                        "simple_explanation": "Frame pada detik 14.50 adalah salinan persis dari frame pada detik 14.40. Ini sering digunakan untuk memperpanjang durasi video atau menyembunyikan penghapusan konten.",
+                        "sift_analysis": {
+                            "success": true,
+                            "total_keypoints_img1": 3056,
+                            "total_keypoints_img2": 3041,
+                            "total_matches": 3056,
+                            "good_matches": 1993,
+                            "match_quality": "excellent",
+                            "inliers": 1975,
+                            "outliers": 18,
+                            "inlier_ratio": 0.9909683893627697,
+                            "homography_determinant": 1.000150122572342,
+                            "estimated_scale": 1.0000750584692841,
+                            "transformation_type": "rigid",
+                            "visualization_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000144_orig_vs_frame_000145_orig.jpg",
+                            "heatmap_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000144_orig_vs_frame_000145_orig.jpg"
+                        },
+                        "implications": "Duplikasi frame dapat mengindikasikan: (1) Usaha memperpanjang durasi, (2) Menutupi frame yang dihapus, (3) Teknik editing untuk transisi"
+                    }
+                },
+                "visualizations": {
+                    "sift_matches": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000144_orig_vs_frame_000145_orig.jpg",
+                    "sift_heatmap": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000144_orig_vs_frame_000145_orig.jpg"
+                },
+                "duration": 0.0,
+                "severity_score": 0.72,
+                "aggregated_metrics": {
+                    "source_frame": {
+                        "mean": 144.0,
+                        "max": 144,
+                        "min": 144,
+                        "std": 0.0
+                    },
+                    "ssim_to_source": {
+                        "mean": 0.9526,
+                        "max": 0.9526,
+                        "min": 0.9526,
+                        "std": 0.0
+                    },
+                    "sift_inliers": {
+                        "mean": 1975.0,
+                        "max": 1975,
+                        "min": 1975,
+                        "std": 0.0
+                    },
+                    "sift_good_matches": {
+                        "mean": 1993.0,
+                        "max": 1993,
+                        "min": 1993,
+                        "std": 0.0
+                    },
+                    "sift_inlier_ratio": {
+                        "mean": 0.991,
+                        "max": 0.991,
+                        "min": 0.991,
+                        "std": 0.0
+                    }
+                }
+            },
+            {
+                "event": "anomaly_discontinuity",
+                "start_frame": 148,
+                "end_frame": 148,
+                "start_ts": 14.8,
+                "end_ts": 14.8,
+                "frame_count": 1,
+                "confidence": "RENDAH",
+                "reasons": "Perubahan Adegan (dari K-Means)",
+                "metrics": {
+                    "color_cluster_jump": "3 \u2192 1"
+                },
+                "all_metrics": [
+                    {
+                        "color_cluster_jump": "3 \u2192 1"
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000148_orig.jpg",
+                "ela_path": null,
+                "sift_path": null,
+                "explanations": {
+                    "scene_change": {
+                        "type": "scene_change",
+                        "frame_index": 148,
+                        "timestamp": 14.8,
+                        "technical_explanation": "Perubahan dari klaster warna 3 ke 1.",
+                        "simple_explanation": "Terjadi perubahan adegan atau sudut pandang kamera.",
+                        "metrics": {
+                            "from_cluster": 3,
+                            "to_cluster": 1
+                        }
+                    }
+                },
+                "visualizations": {},
+                "duration": 0.0,
+                "severity_score": 0.3,
+                "aggregated_metrics": {}
+            },
+            {
+                "event": "anomaly_duplication",
+                "start_frame": 149,
+                "end_frame": 149,
+                "start_ts": 14.9,
+                "end_ts": 14.9,
+                "frame_count": 1,
+                "confidence": "SANGAT TINGGI",
+                "reasons": "Duplikasi dari frame 148",
+                "metrics": {
+                    "source_frame": 148,
+                    "ssim_to_source": 0.9858,
+                    "sift_inliers": 2387,
+                    "sift_good_matches": 2396,
+                    "sift_inlier_ratio": 0.996
+                },
+                "all_metrics": [
+                    {
+                        "source_frame": 148,
+                        "ssim_to_source": 0.9858,
+                        "sift_inliers": 2387,
+                        "sift_good_matches": 2396,
+                        "sift_inlier_ratio": 0.996
+                    }
+                ],
+                "image": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\frames_F_Dup1_h264_32_IPB_28\\frames_original\\frame_000149_orig.jpg",
+                "ela_path": null,
+                "sift_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000148_orig_vs_frame_000149_orig.jpg",
+                "explanations": {
+                    "duplication": {
+                        "type": "frame_duplication",
+                        "duplicate_frame": 149,
+                        "source_frame": 148,
+                        "timestamp_duplicate": 14.9,
+                        "timestamp_source": 14.8,
+                        "time_gap": 0.09999999999999964,
+                        "confidence": "very_high",
+                        "technical_explanation": "Frame 149 adalah duplikasi dari frame 148 dengan 2387 titik fitur yang cocok sempurna (99.6% akurasi).",
+                        "simple_explanation": "Frame pada detik 14.90 adalah salinan persis dari frame pada detik 14.80. Ini sering digunakan untuk memperpanjang durasi video atau menyembunyikan penghapusan konten.",
+                        "sift_analysis": {
+                            "success": true,
+                            "total_keypoints_img1": 2842,
+                            "total_keypoints_img2": 2831,
+                            "total_matches": 2842,
+                            "good_matches": 2396,
+                            "match_quality": "excellent",
+                            "inliers": 2387,
+                            "outliers": 9,
+                            "inlier_ratio": 0.9962437395659433,
+                            "homography_determinant": 1.0003256983220334,
+                            "estimated_scale": 1.000162835903251,
+                            "transformation_type": "rigid",
+                            "visualization_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000148_orig_vs_frame_000149_orig.jpg",
+                            "heatmap_path": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000148_orig_vs_frame_000149_orig.jpg"
+                        },
+                        "implications": "Duplikasi frame dapat mengindikasikan: (1) Usaha memperpanjang durasi, (2) Menutupi frame yang dihapus, (3) Teknik editing untuk transisi"
+                    }
+                },
+                "visualizations": {
+                    "sift_matches": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_detailed_frame_000148_orig_vs_frame_000149_orig.jpg",
+                    "sift_heatmap": "C:\\Users\\AGRIAN~1\\AppData\\Local\\Temp\\tmpg5jiv9lg\\sift_artifacts\\sift_heatmap_frame_000148_orig_vs_frame_000149_orig.jpg"
+                },
+                "duration": 0.0,
+                "severity_score": 0.72,
+                "aggregated_metrics": {
+                    "source_frame": {
+                        "mean": 148.0,
+                        "max": 148,
+                        "min": 148,
+                        "std": 0.0
+                    },
+                    "ssim_to_source": {
+                        "mean": 0.9858,
+                        "max": 0.9858,
+                        "min": 0.9858,
+                        "std": 0.0
+                    },
+                    "sift_inliers": {
+                        "mean": 2387.0,
+                        "max": 2387,
+                        "min": 2387,
+                        "std": 0.0
+                    },
+                    "sift_good_matches": {
+                        "mean": 2396.0,
+                        "max": 2396,
+                        "min": 2396,
+                        "std": 0.0
+                    },
+                    "sift_inlier_ratio": {
+                        "mean": 0.996,
+                        "max": 0.996,
+                        "min": 0.996,
+                        "std": 0.0
+                    }
+                }
+            }
+        ],
+        "localizations_count": 31,
+        "anomaly_types": {
+            "duplication": 14,
+            "insertion": 0,
+            "discontinuity": 17
+        },
+        "saved_artifacts": {
+            "anomaly_summary": "analysis_artifacts\\5e48ce88-5ba9-463d-b722-9545d85c37d1\\anomaly_summary.png",
+            "enhanced_localization_map": "analysis_artifacts\\5e48ce88-5ba9-463d-b722-9545d85c37d1\\enhanced_localization_map_F_Dup1_h264_32_IPB_28.png",
+            "integrity_breakdown": "analysis_artifacts\\5e48ce88-5ba9-463d-b722-9545d85c37d1\\integrity_breakdown_F_Dup1_h264_32_IPB_28.png",
+            "anomaly_infographic": "analysis_artifacts\\5e48ce88-5ba9-463d-b722-9545d85c37d1\\anomaly_explanation_F_Dup1_h264_32_IPB_28.png",
+            "kmeans_temporal": "analysis_artifacts\\5e48ce88-5ba9-463d-b722-9545d85c37d1\\plot_kmeans_temporal_F_Dup1_h264_32_IPB_28.png",
+            "ssim_temporal": "analysis_artifacts\\5e48ce88-5ba9-463d-b722-9545d85c37d1\\plot_ssim_temporal_F_Dup1_h264_32_IPB_28.png",
+            "optical_flow_temporal": "analysis_artifacts\\5e48ce88-5ba9-463d-b722-9545d85c37d1\\plot_optical_flow_temporal_F_Dup1_h264_32_IPB_28.png",
+            "metrics_histograms": "analysis_artifacts\\5e48ce88-5ba9-463d-b722-9545d85c37d1\\plot_metrics_histograms_F_Dup1_h264_32_IPB_28.png",
+            "temporal": "analysis_artifacts\\5e48ce88-5ba9-463d-b722-9545d85c37d1\\plot_temporal_F_Dup1_h264_32_IPB_28.png",
+            "anomaly_frame_0": "analysis_artifacts\\5e48ce88-5ba9-463d-b722-9545d85c37d1\\sample_anomaly_frame_0.jpg",
+            "anomaly_frame_1": "analysis_artifacts\\5e48ce88-5ba9-463d-b722-9545d85c37d1\\sample_anomaly_frame_1.jpg",
+            "anomaly_frame_2": "analysis_artifacts\\5e48ce88-5ba9-463d-b722-9545d85c37d1\\sample_anomaly_frame_2.jpg"
+        },
+        "additional_info": {
+            "fps": 10,
+            "has_baseline": false
+        }
+    }
+]
