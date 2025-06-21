@@ -88,6 +88,13 @@ except ImportError as e:
 
 class Icons: IDENTIFICATION="🔍"; PRESERVATION="🛡️"; COLLECTION="📥"; EXAMINATION="🔬"; ANALYSIS="📈"; REPORTING="📄"; SUCCESS="✅"; ERROR="❌"; INFO="ℹ️"; CONFIDENCE_LOW="🟩"; CONFIDENCE_MED="🟨"; CONFIDENCE_HIGH="🟧"; CONFIDENCE_VHIGH="🟥"
 CONFIG = {"HASH_DIST_DUPLICATE": 2, "OPTICAL_FLOW_Z_THRESH": 4.0, "SSIM_DISCONTINUITY_DROP": 0.25, "SIFT_MIN_MATCH_COUNT": 10, "KMEANS_CLUSTERS": 8, "DUPLICATION_SSIM_CONFIRM": 0.95, "KMEANS_SAMPLES_PER_CLUSTER": 5}
+# ====== [NEW] False-Positive Fix June-2025 ======
+CONFIG.update({
+    "USE_AUTO_THRESHOLDS": True,
+    "SSIM_USER_THRESHOLD": 0.25,
+    "Z_USER_THRESHOLD": 4.0,
+})
+# ====== [END NEW] ======
 
 # Fungsi log yang dienkapsulasi untuk output ke konsol dan UI Streamlit
 def log(message: str):
@@ -148,6 +155,12 @@ class AnalysisResult:
     localizations: list[dict] = field(default_factory=list)
     pdf_report_path: Path | None = None
     pdf_report_data: bytes | None = None
+    # ====== [NEW] Metadata Forensics Enhancement ======
+    html_report_path: Path | None = None
+    json_report_path: Path | None = None
+    html_report_data: bytes | None = None
+    json_report_data: bytes | None = None
+    # ====== [END NEW] ======
     # Tambahan untuk Tahap 3
     detailed_anomaly_analysis: dict = field(default_factory=dict)
     statistical_summary: dict = field(default_factory=dict)
@@ -580,6 +593,119 @@ def parse_ffprobe_output(metadata: dict) -> dict:
             'Bitrate': f"{int(stream.get('bit_rate', 0)) / 1000:.0f} kb/s" if 'bit_rate' in stream else 'N/A',
         }
     return parsed
+
+# ====== [NEW] False-Positive Fix June-2025 ======
+class Preprocessor:
+    """Utilities for video preprocessing."""
+
+    @staticmethod
+    def normalize_fps(video_path: Path, target_fps: int = 30) -> tuple[Path, float | None]:
+        """Normalize FPS using ffmpeg if below threshold."""
+        try:
+            import ffmpeg
+        except ImportError:
+            log("⚠️ Modul ffmpeg-python tidak ditemukan. Install dengan `pip install ffmpeg-python`.")
+            return video_path, None
+
+        try:
+            probe = ffmpeg.probe(str(video_path))
+            v_stream = next((s for s in probe['streams'] if s.get('codec_type') == 'video'), None)
+            fps = eval(v_stream.get('avg_frame_rate', '0/1')) if v_stream else None
+        except Exception:
+            fps = None
+
+        if fps and fps < 24:
+            out_path = video_path.with_name(video_path.stem + f"_norm{target_fps}" + video_path.suffix)
+            try:
+                ffmpeg.input(str(video_path)).output(str(out_path), r=target_fps, loglevel='error').overwrite_output().run()
+                return out_path, fps
+            except Exception as e:
+                log(f"  {Icons.ERROR} Normalisasi FPS gagal: {e}")
+        return video_path, fps
+
+
+def adaptive_thresholds(fps: float, motion_level: float) -> tuple[float, float]:
+    """Return adaptive SSIM drop and optical flow z-score thresholds."""
+    ssim_val = 0.25 + (fps / 60.0) * 0.10
+    ssim_val = min(0.35, max(0.25, ssim_val))
+    z_thresh = round(4 + (30 / max(fps, 1.0)), 1)
+    if motion_level < 0.1:
+        z_thresh += 0.5
+    return ssim_val, z_thresh
+# ====== [END NEW] ======
+
+
+# ====== [NEW] Metadata Forensics Enhancement ======
+class VideoMetaAnalyzer:
+    def __init__(self, video_path: Path):
+        self.video_path = Path(video_path)
+        self.metadata = {}
+
+    def extract(self) -> dict:
+        data = {}
+        try:
+            from pymediainfo import MediaInfo
+            media = MediaInfo.parse(str(self.video_path))
+            for track in media.tracks:
+                if track.track_type == 'General':
+                    data.setdefault('Format', {})
+                    data['Format'].update({
+                        'Duration': f"{float(track.duration)/1000:.3f} s" if track.duration else 'N/A',
+                        'File Size': f"{int(track.file_size)/(1024*1024):.2f} MB" if track.file_size else 'N/A',
+                        'Creation Time': getattr(track, 'tagged_date', None) or 'N/A',
+                        'Modification Time': getattr(track, 'file_last_modification_date', None) or 'N/A',
+                        'Major Brand': getattr(track, 'format', 'N/A'),
+                        'Compatible Brands': getattr(track, 'compatible_brands', 'N/A')
+                    })
+                if track.track_type == 'Video':
+                    data.setdefault('Video Stream', {})
+                    data['Video Stream'].update({
+                        'Codec': track.codec or 'N/A',
+                        'Profile': track.format_profile or 'N/A',
+                        'Frame Rate': track.frame_rate or 'N/A',
+                        'Bit Rate': track.bit_rate or 'N/A',
+                        'Resolution': f"{track.width}x{track.height}" if track.width else 'N/A',
+                        'Colour Primaries': getattr(track, 'colour_primaries', 'N/A'),
+                        'GOP': getattr(track, 'gop', 'N/A'),
+                        'B-Frames': getattr(track, 'b_frame_count', 'N/A'),
+                        'Color Range': getattr(track, 'colour_range', 'N/A'),
+                        'Rotation': track.rotation or 'N/A'
+                    })
+                if track.track_type == 'Audio':
+                    data.setdefault('Audio Stream', {})
+                    data['Audio Stream'].update({
+                        'Codec': track.codec or 'N/A',
+                        'Sample Rate': track.sampling_rate or 'N/A',
+                        'Channel Layout': getattr(track, 'channel_layout', 'N/A'),
+                        'Language': track.language or 'N/A'
+                    })
+        except ImportError:
+            log('  \u26A0\ufe0f pymediainfo tidak ditemukan, fallback ke ffprobe.')
+        except Exception as e:
+            log(f"  {Icons.ERROR} Gagal mengekstrak metadata lanjutan: {e}")
+
+        if not data:
+            raw = ffprobe_metadata(self.video_path)
+            if raw:
+                data = parse_ffprobe_output(raw)
+        self.metadata = data
+        return data
+
+
+def explain_metadata(field: str) -> str:
+    explanations = {
+        'Codec': 'Format kompresi video/audio yang digunakan. Perubahan codec dapat menandakan proses konversi.',
+        'Frame Rate': 'Jumlah frame per detik. Ketidakwajaran bisa menunjukkan proses editing.',
+        'Bit Rate': 'Jumlah data per detik. Nilai terlalu rendah/tidak konsisten mengindikasikan kompresi ulang.',
+        'Colour Primaries': 'Standar warna file video. Ketidaksesuaian antar segmen dapat menjadi indikasi manipulasi.',
+        'Creation Time': 'Waktu pembuatan file asli. Bandingkan dengan Modification Time untuk menduga perubahan.',
+        'Modification Time': 'Waktu file terakhir diubah. Perbedaan jauh dari Creation Time bisa mencurigakan.',
+        'GOP': 'Jarak antar keyframe. Pola GOP tak konsisten dapat menunjukkan penyuntingan frame.',
+        'B-Frames': 'Frame prediktif dua arah yang biasanya muncul dalam encoding modern.',
+        'Major Brand': 'Identitas container utama yang memberi petunjuk asal perangkat atau encoder.'
+    }
+    return explanations.get(field, 'Tidak ada penjelasan khusus.')
+# ====== [END NEW] ======
 
 
 # --- FUNGSI DIREVISI: EKSTRAKSI FRAME DENGAN NORMALISASI WARNA ---
@@ -1099,9 +1225,17 @@ def create_anomaly_explanation_infographic(result: AnalysisResult, out_dir: Path
 
 # --- TAHAP 1: PRA-PEMROSESAN & EKSTRAKSI FITUR DASAR (EXISTING) ---
 def run_tahap_1_pra_pemrosesan(video_path: Path, out_dir: Path, fps: int) -> AnalysisResult | None:
-    print_stage_banner(1, "Pra-pemrosesan & Ekstraksi Fitur Dasar", Icons.COLLECTION, 
+    print_stage_banner(1, "Pra-pemrosesan & Ekstraksi Fitur Dasar", Icons.COLLECTION,
                        "Melakukan hashing, ekstraksi metadata detail, normalisasi frame, pHash, dan analisis K-Means.")
-    
+
+    # ====== [NEW] False-Positive Fix June-2025 ======
+    norm_path, original_fps = Preprocessor.normalize_fps(video_path)
+    fps_normalized = norm_path != video_path
+    if fps_normalized:
+        video_path = norm_path
+        fps = 30
+    # ====== [END NEW] ======
+
     log(f"  {Icons.PRESERVATION} Menghitung hash SHA-256 untuk preservasi...")
     preservation_hash = calculate_sha256(video_path)
     log(f"  -> Hash Bukti: {preservation_hash}")
@@ -1112,6 +1246,18 @@ def run_tahap_1_pra_pemrosesan(video_path: Path, out_dir: Path, fps: int) -> Ana
         log(f"  {Icons.ERROR} Gagal mengekstrak metadata. Analisis tidak dapat dilanjutkan.")
         return None
     metadata = parse_ffprobe_output(raw_metadata)
+    # ====== [NEW] False-Positive Fix June-2025 ======
+    metadata['fps_initial'] = original_fps
+    metadata['fps_effective'] = fps
+    metadata['fps_normalized'] = fps_normalized
+    # ====== [END NEW] ======
+    # ====== [NEW] Metadata Forensics Enhancement ======
+    try:
+        meta_analyzer = VideoMetaAnalyzer(video_path)
+        metadata['Advanced'] = meta_analyzer.extract()
+    except Exception as e:
+        log(f"  {Icons.ERROR} Ekstraksi metadata lanjutan gagal: {e}")
+    # ====== [END NEW] ======
     log(f"  -> Metadata berhasil diurai. Codec video: {metadata.get('Video Stream', {}).get('Codec', 'N/A')}")
 
     log(f"  {Icons.COLLECTION} Mengekstrak, menormalisasi, dan membandingkan frame @ {fps} FPS...")
@@ -1147,6 +1293,13 @@ def run_tahap_1_pra_pemrosesan(video_path: Path, out_dir: Path, fps: int) -> Ana
         hist = cv2.calcHist([img], [0, 1, 2], None, [8, 8, 8], [0, 256, 0, 256, 0, 256])
         cv2.normalize(hist, hist)
         histograms.append(hist.flatten())
+
+    # ====== [NEW] False-Positive Fix June-2025 ======
+    if histograms:
+        scene_variance = float(np.var(histograms))
+        if scene_variance < 0.15:
+            CONFIG["KMEANS_CLUSTERS"] = 5
+    # ====== [END NEW] ======
 
     kmeans_artifacts = {}
     if histograms:
@@ -1220,6 +1373,9 @@ def run_tahap_1_pra_pemrosesan(video_path: Path, out_dir: Path, fps: int) -> Ana
     log(f"  {Icons.SUCCESS} Tahap 1 Selesai.")
     result = AnalysisResult(str(video_path), preservation_hash, metadata, frames)
     result.kmeans_artifacts = kmeans_artifacts
+    # ====== [NEW] False-Positive Fix June-2025 ======
+    result.summary['fps_normalized'] = fps_normalized
+    # ====== [END NEW] ======
     return result
 
 # --- TAHAP 2: ANALISIS ANOMALI TEMPORAL & KOMPARATIF (EXISTING) ---
@@ -1319,9 +1475,20 @@ def run_tahap_3_sintesis_bukti(result: AnalysisResult, out_dir: Path):
             log(f"     - Median: {median_flow:.3f}")
             log(f"     - MAD (Median Absolute Deviation): {mad_flow:.3f}")
             log(f"     - Persentil 25/75/95: {p25:.3f}/{p75:.3f}/{p95:.3f}")
-        else: 
+        else:
             median_flow = 0.0
-            mad_flow = 1.0 
+            mad_flow = 1.0
+
+        # ====== [NEW] False-Positive Fix June-2025 ======
+        ssim_t, z_t = adaptive_thresholds(result.metadata.get('fps_effective', 30), median_flow)
+        if CONFIG.get('USE_AUTO_THRESHOLDS', True):
+            CONFIG['SSIM_DISCONTINUITY_DROP'] = ssim_t
+            CONFIG['OPTICAL_FLOW_Z_THRESH'] = z_t
+        else:
+            CONFIG['SSIM_DISCONTINUITY_DROP'] = CONFIG.get('SSIM_USER_THRESHOLD', 0.25)
+            CONFIG['OPTICAL_FLOW_Z_THRESH'] = CONFIG.get('Z_USER_THRESHOLD', 4.0)
+        result.summary['thresholds'] = {'ssim_drop': CONFIG['SSIM_DISCONTINUITY_DROP'], 'z_score': CONFIG['OPTICAL_FLOW_Z_THRESH']}
+        # ====== [END NEW] ======
 
         # Deteksi anomali dengan Z-score
         for f in frames:
@@ -1468,6 +1635,11 @@ def run_tahap_3_sintesis_bukti(result: AnalysisResult, out_dir: Path):
         for hash_val, idxs in tqdm(dup_candidates.items(), desc="    Verifikasi Duplikasi", leave=False):
             for i in range(len(idxs) - 1):
                 idx1, idx2 = idxs[i], idxs[i + 1]
+                # ====== [NEW] False-Positive Fix June-2025 ======
+                window = idxs[i:i+3]
+                if len(window) < 3 or (frames[window[-1]].timestamp - frames[window[0]].timestamp) > 0.5:
+                    continue
+                # ====== [END NEW] ======
                 p1, p2 = Path(frames[idx1].img_path_original), Path(frames[idx2].img_path_original)
                 
                 # Cek SSIM terlebih dahulu
@@ -2129,12 +2301,38 @@ def calculate_event_severity(event: dict) -> float:
     # Adjust by duration
     if event.get('duration', 0) > 2.0:  # Long events are more severe
         severity *= 1.1
-    
+
     # Adjust by frame count
     if event.get('frame_count', 0) > 10:
         severity *= 1.1
-    
+
     return min(1.0, severity)
+
+# ====== [NEW] Metadata Forensics Enhancement ======
+def generate_simple_reports(result: AnalysisResult, report_dir: Path) -> None:
+    """Generate HTML & JSON forensic reports."""
+    report_dir.mkdir(parents=True, exist_ok=True)
+    data = {
+        'video': Path(result.video_path).name,
+        'hash': result.preservation_hash,
+        'summary': result.summary,
+        'metadata': result.metadata,
+        'integrity': result.integrity_analysis,
+        'localizations': result.localizations
+    }
+    json_path = report_dir / f"{Path(result.video_path).stem}_forensic.json"
+    html_path = report_dir / f"{Path(result.video_path).stem}_forensic.html"
+    try:
+        with open(json_path, 'w', encoding='utf-8') as jf:
+            json.dump(data, jf, indent=2)
+        html_content = f"<html><body><h1>Forensic Report</h1><pre>{json.dumps(data, indent=2)}</pre></body></html>"
+        with open(html_path, 'w', encoding='utf-8') as hf:
+            hf.write(html_content)
+        result.json_report_path = json_path
+        result.html_report_path = html_path
+    except Exception as e:
+        log(f"  {Icons.ERROR} Gagal membuat laporan HTML/JSON: {e}")
+# ====== [END NEW] ======
 
 # --- TAHAP 5: PENYUSUNAN LAPORAN & VALIDASI FORENSIK (ADJUSTED FOR ENHANCED TAHAP 4) ---
 def run_tahap_5_pelaporan_dan_validasi(result: AnalysisResult, out_dir: Path, baseline_result: AnalysisResult | None = None):
@@ -2465,9 +2663,13 @@ def run_tahap_5_pelaporan_dan_validasi(result: AnalysisResult, out_dir: Path, ba
         doc.build(story, onFirstPage=header_footer, onLaterPages=header_footer)
         log(f"\n  {Icons.SUCCESS} Laporan PDF berhasil dibuat: {pdf_path.name}")
         result.pdf_report_path = pdf_path
+        # ====== [NEW] Metadata Forensics Enhancement ======
+        generate_simple_reports(result, out_dir / "reports")
+        # ====== [END NEW] ======
     except Exception as e:
         log(f"\n  {Icons.ERROR} Gagal membuat laporan PDF: {e}")
         log(traceback.format_exc())
         result.pdf_report_path = None
 
 # --- END OF FILE ForensikVideo.py (FIXED) ---
+
