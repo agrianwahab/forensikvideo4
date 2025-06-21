@@ -2,6 +2,7 @@
 
 import json
 import os
+import sqlite3
 from datetime import datetime
 from pathlib import Path
 import shutil
@@ -27,6 +28,16 @@ class HistoryManager:
         self.history_file = Path(history_file)
         self.history_folder = Path(history_folder)
         self.history_folder.mkdir(exist_ok=True)
+
+        # ====== [NEW] False-Positive Fix June-2025 ======
+        self.db_path = Path("analysis_settings.db")
+        conn = sqlite3.connect(self.db_path)
+        conn.execute(
+            "CREATE TABLE IF NOT EXISTS settings (id TEXT PRIMARY KEY, video_name TEXT, timestamp TEXT, fps_awal REAL, fps_baru REAL, ssim_thresh REAL, z_thresh REAL)"
+        )
+        conn.commit()
+        conn.close()
+        # ====== [END NEW] ======
         
         # Buat file riwayat jika belum ada dengan struktur list kosong.
         if not self.history_file.exists():
@@ -70,7 +81,14 @@ class HistoryManager:
             "localizations_count": len(result.localizations),
             "anomaly_types": self._count_anomaly_types(result),
             "saved_artifacts": saved_artifacts,
-            "additional_info": additional_info if additional_info else {}
+            "additional_info": additional_info if additional_info else {},
+            # ====== [NEW] Metadata Forensics Enhancement ======
+            "report_paths": {
+                "pdf": str(result.pdf_report_path) if result.pdf_report_path else None,
+                "html": str(getattr(result, 'html_report_path', '')) or None,
+                "json": str(getattr(result, 'json_report_path', '')) or None,
+            }
+            # ====== [END NEW] ======
         }
         
         history = self.load_history()
@@ -78,7 +96,28 @@ class HistoryManager:
         
         with open(self.history_file, 'w') as f:
             json.dump(history, f, indent=4) # indent 4 untuk keterbacaan
-        
+
+        # ====== [NEW] False-Positive Fix June-2025 ======
+        try:
+            conn = sqlite3.connect(self.db_path)
+            conn.execute(
+                "INSERT INTO settings(id, video_name, timestamp, fps_awal, fps_baru, ssim_thresh, z_thresh) VALUES (?,?,?,?,?,?,?)",
+                (
+                    analysis_id,
+                    video_name,
+                    history_entry["timestamp"],
+                    additional_info.get("fps_awal") if additional_info else None,
+                    additional_info.get("fps_baru") if additional_info else None,
+                    additional_info.get("ssim_threshold") if additional_info else None,
+                    additional_info.get("z_threshold") if additional_info else None,
+                ),
+            )
+            conn.commit()
+            conn.close()
+        except Exception:
+            pass
+        # ====== [END NEW] ======
+
         return analysis_id
     
     def load_history(self):
@@ -219,6 +258,21 @@ class HistoryManager:
                 target_path = folder / f"sample_anomaly_frame_{i}.jpg"
                 shutil.copy(loc['image'], target_path)
                 saved[f"anomaly_frame_{i}"] = str(target_path)
+
+        # ====== [NEW] Metadata Forensics Enhancement ======
+        if getattr(result, 'pdf_report_path', None) and os.path.exists(result.pdf_report_path):
+            target_path = folder / Path(result.pdf_report_path).name
+            shutil.copy(result.pdf_report_path, target_path)
+            saved['pdf_report'] = str(target_path)
+        if getattr(result, 'html_report_path', None) and os.path.exists(result.html_report_path):
+            target_path = folder / Path(result.html_report_path).name
+            shutil.copy(result.html_report_path, target_path)
+            saved['html_report'] = str(target_path)
+        if getattr(result, 'json_report_path', None) and os.path.exists(result.json_report_path):
+            target_path = folder / Path(result.json_report_path).name
+            shutil.copy(result.json_report_path, target_path)
+            saved['json_report'] = str(target_path)
+        # ====== [END NEW] ======
         
         return saved
     
@@ -293,3 +347,4 @@ class HistoryManager:
                 "recommendation": "Sangat tidak disarankan menggunakan video ini sebagai bukti tanpa validasi dan investigasi forensik manual yang sangat mendalam. Keasliannya sangat diragukan."
             }
 # --- END OF FILE history_manager.py ---
+
