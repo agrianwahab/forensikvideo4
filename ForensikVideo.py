@@ -88,6 +88,13 @@ except ImportError as e:
 
 class Icons: IDENTIFICATION="🔍"; PRESERVATION="🛡️"; COLLECTION="📥"; EXAMINATION="🔬"; ANALYSIS="📈"; REPORTING="📄"; SUCCESS="✅"; ERROR="❌"; INFO="ℹ️"; CONFIDENCE_LOW="🟩"; CONFIDENCE_MED="🟨"; CONFIDENCE_HIGH="🟧"; CONFIDENCE_VHIGH="🟥"
 CONFIG = {"HASH_DIST_DUPLICATE": 2, "OPTICAL_FLOW_Z_THRESH": 4.0, "SSIM_DISCONTINUITY_DROP": 0.25, "SIFT_MIN_MATCH_COUNT": 10, "KMEANS_CLUSTERS": 8, "DUPLICATION_SSIM_CONFIRM": 0.95, "KMEANS_SAMPLES_PER_CLUSTER": 5}
+# ====== [NEW] False-Positive Fix June-2025 ======
+CONFIG.update({
+    "USE_AUTO_THRESHOLDS": True,
+    "SSIM_USER_THRESHOLD": 0.25,
+    "Z_USER_THRESHOLD": 4.0,
+})
+# ====== [END NEW] ======
 
 # Fungsi log yang dienkapsulasi untuk output ke konsol dan UI Streamlit
 def log(message: str):
@@ -576,7 +583,6 @@ def parse_ffprobe_output(metadata: dict) -> dict:
             'Encoder': stream.get('tags', {}).get('encoder', 'N/A'),
         }
 
-    audio_streams = [s for s in metadata.get('streams', []) if s.get('codec_type') == 'audio']
     if audio_streams:
         stream = audio_streams[0]
         parsed['Audio Stream'] = {
@@ -586,7 +592,6 @@ def parse_ffprobe_output(metadata: dict) -> dict:
             'Bitrate': f"{int(stream.get('bit_rate', 0)) / 1000:.0f} kb/s" if 'bit_rate' in stream else 'N/A',
         }
     return parsed
-
 
 # ====== [NEW] Metadata Forensics Enhancement ======
 class VideoMetaAnalyzer:
@@ -1178,9 +1183,17 @@ def create_anomaly_explanation_infographic(result: AnalysisResult, out_dir: Path
 
 # --- TAHAP 1: PRA-PEMROSESAN & EKSTRAKSI FITUR DASAR (EXISTING) ---
 def run_tahap_1_pra_pemrosesan(video_path: Path, out_dir: Path, fps: int) -> AnalysisResult | None:
-    print_stage_banner(1, "Pra-pemrosesan & Ekstraksi Fitur Dasar", Icons.COLLECTION, 
+    print_stage_banner(1, "Pra-pemrosesan & Ekstraksi Fitur Dasar", Icons.COLLECTION,
                        "Melakukan hashing, ekstraksi metadata detail, normalisasi frame, pHash, dan analisis K-Means.")
-    
+
+    # ====== [NEW] False-Positive Fix June-2025 ======
+    norm_path, original_fps = Preprocessor.normalize_fps(video_path)
+    fps_normalized = norm_path != video_path
+    if fps_normalized:
+        video_path = norm_path
+        fps = 30
+    # ====== [END NEW] ======
+
     log(f"  {Icons.PRESERVATION} Menghitung hash SHA-256 untuk preservasi...")
     preservation_hash = calculate_sha256(video_path)
     log(f"  -> Hash Bukti: {preservation_hash}")
@@ -1191,7 +1204,8 @@ def run_tahap_1_pra_pemrosesan(video_path: Path, out_dir: Path, fps: int) -> Ana
         log(f"  {Icons.ERROR} Gagal mengekstrak metadata. Analisis tidak dapat dilanjutkan.")
         return None
     metadata = parse_ffprobe_output(raw_metadata)
-    # ====== [NEW] Metadata Forensics Enhancement ======
+   
+  # ====== [NEW] Metadata Forensics Enhancement ======
     try:
         meta_analyzer = VideoMetaAnalyzer(video_path)
         metadata['Advanced'] = meta_analyzer.extract()
@@ -1233,6 +1247,13 @@ def run_tahap_1_pra_pemrosesan(video_path: Path, out_dir: Path, fps: int) -> Ana
         hist = cv2.calcHist([img], [0, 1, 2], None, [8, 8, 8], [0, 256, 0, 256, 0, 256])
         cv2.normalize(hist, hist)
         histograms.append(hist.flatten())
+
+    # ====== [NEW] False-Positive Fix June-2025 ======
+    if histograms:
+        scene_variance = float(np.var(histograms))
+        if scene_variance < 0.15:
+            CONFIG["KMEANS_CLUSTERS"] = 5
+    # ====== [END NEW] ======
 
     kmeans_artifacts = {}
     if histograms:
@@ -1306,6 +1327,9 @@ def run_tahap_1_pra_pemrosesan(video_path: Path, out_dir: Path, fps: int) -> Ana
     log(f"  {Icons.SUCCESS} Tahap 1 Selesai.")
     result = AnalysisResult(str(video_path), preservation_hash, metadata, frames)
     result.kmeans_artifacts = kmeans_artifacts
+    # ====== [NEW] False-Positive Fix June-2025 ======
+    result.summary['fps_normalized'] = fps_normalized
+    # ====== [END NEW] ======
     return result
 
 # --- TAHAP 2: ANALISIS ANOMALI TEMPORAL & KOMPARATIF (EXISTING) ---
@@ -1405,9 +1429,20 @@ def run_tahap_3_sintesis_bukti(result: AnalysisResult, out_dir: Path):
             log(f"     - Median: {median_flow:.3f}")
             log(f"     - MAD (Median Absolute Deviation): {mad_flow:.3f}")
             log(f"     - Persentil 25/75/95: {p25:.3f}/{p75:.3f}/{p95:.3f}")
-        else: 
+        else:
             median_flow = 0.0
-            mad_flow = 1.0 
+            mad_flow = 1.0
+
+        # ====== [NEW] False-Positive Fix June-2025 ======
+        ssim_t, z_t = adaptive_thresholds(result.metadata.get('fps_effective', 30), median_flow)
+        if CONFIG.get('USE_AUTO_THRESHOLDS', True):
+            CONFIG['SSIM_DISCONTINUITY_DROP'] = ssim_t
+            CONFIG['OPTICAL_FLOW_Z_THRESH'] = z_t
+        else:
+            CONFIG['SSIM_DISCONTINUITY_DROP'] = CONFIG.get('SSIM_USER_THRESHOLD', 0.25)
+            CONFIG['OPTICAL_FLOW_Z_THRESH'] = CONFIG.get('Z_USER_THRESHOLD', 4.0)
+        result.summary['thresholds'] = {'ssim_drop': CONFIG['SSIM_DISCONTINUITY_DROP'], 'z_score': CONFIG['OPTICAL_FLOW_Z_THRESH']}
+        # ====== [END NEW] ======
 
         # Deteksi anomali dengan Z-score
         for f in frames:
@@ -1554,6 +1589,11 @@ def run_tahap_3_sintesis_bukti(result: AnalysisResult, out_dir: Path):
         for hash_val, idxs in tqdm(dup_candidates.items(), desc="    Verifikasi Duplikasi", leave=False):
             for i in range(len(idxs) - 1):
                 idx1, idx2 = idxs[i], idxs[i + 1]
+                # ====== [NEW] False-Positive Fix June-2025 ======
+                window = idxs[i:i+3]
+                if len(window) < 3 or (frames[window[-1]].timestamp - frames[window[0]].timestamp) > 0.5:
+                    continue
+                # ====== [END NEW] ======
                 p1, p2 = Path(frames[idx1].img_path_original), Path(frames[idx2].img_path_original)
                 
                 # Cek SSIM terlebih dahulu
@@ -2585,4 +2625,3 @@ def run_tahap_5_pelaporan_dan_validasi(result: AnalysisResult, out_dir: Path, ba
         log(traceback.format_exc())
         result.pdf_report_path = None
 
-# --- END OF FILE ForensikVideo.py (FIXED) ---
