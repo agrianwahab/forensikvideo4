@@ -1485,20 +1485,29 @@ def run_tahap_3_sintesis_bukti(result: AnalysisResult, out_dir: Path):
                 'simple_explanation': "Terjadi perubahan adegan atau sudut pandang kamera.",
                 'metrics': {
                     'from_cluster': f_prev.color_cluster,
-                    'to_cluster': f_curr.color_cluster
-                }
-            }
-            f_curr.evidence_obj.explanations['scene_change'] = explanation
-
-    # Hitung frekuensi perubahan adegan
-    if scene_changes:
-        for i in range(1, len(scene_changes)):
-            scene_changes[i]['time_since_last_change'] = scene_changes[i]['timestamp'] - scene_changes[i-1]['timestamp']
-        
-        avg_scene_duration = np.mean([sc['time_since_last_change'] for sc in scene_changes[1:]]) if len(scene_changes) > 1 else 0
-        log(f"  📊 Total perubahan adegan: {len(scene_changes)}")
-        log(f"     Durasi rata-rata per adegan: {avg_scene_duration:.2f} detik")
-
+                        explanation = {
+                            "type": "optical_flow_spike",
+                            "frame_index": f.index,
+                            "timestamp": f.timestamp,
+                            "severity": "high" if abs(z_score) > 6 else "medium",
+                            "technical_explanation": (
+                                f"Frame ini menunjukkan pergerakan piksel yang {abs(z_score):.1f}x lebih besar dari normal."
+                            ),
+                            "simple_explanation": (
+                                "Terjadi perubahan gambar yang sangat mendadak, "
+                                "seperti perpindahan kamera yang kasar atau cut yang tidak halus."
+                            ),
+                            "metrics": {
+                                "flow_magnitude": f.optical_flow_mag,
+                                "z_score": z_score,
+                                "median_flow": median_flow,
+                                "deviation_percentage": (
+                                    (f.optical_flow_mag - median_flow) / median_flow * 100
+                                )
+                                if median_flow > 0
+                                else 0,
+                            },
+                        }
     # METODE PENDUKUNG: Verifikasi duplikasi dengan analisis mendalam
     log(f"\n  {Icons.EXAMINATION} METODE PENDUKUNG 1: Analisis Duplikasi Frame (SIFT+RANSAC)...")
     log(f"  📖 Penjelasan: SIFT mendeteksi titik-titik unik dalam gambar. Jika dua frame memiliki")
