@@ -624,8 +624,14 @@ class VideoMetaAnalyzer:
                         'Bit Rate': track.bit_rate or 'N/A',
                         'Resolution': f"{track.width}x{track.height}" if track.width else 'N/A',
                         'Colour Primaries': getattr(track, 'colour_primaries', 'N/A'),
-                        'GOP': getattr(track, 'gop', 'N/A'),
-                        'B-Frames': getattr(track, 'b_frame_count', 'N/A'),
+                    writing_app = getattr(track, 'writing_application', '') or getattr(track, 'encoder', '')
+                    ai_flag = any(k.lower() in writing_app.lower() for k in ['lavf', 'tiktok', 'reels', 'capcut'])
+                        'Compatible Brands': getattr(track, 'compatible_brands', 'N/A'),
+                        'Writing Application': writing_app or 'N/A',
+                        'AI Generated Flag': 'Yes' if ai_flag else 'No'
+        'Major Brand': 'Identitas container utama yang memberi petunjuk asal perangkat atau encoder.',
+        'Writing Application': 'Perangkat lunak yang digunakan untuk menulis file. Nama aplikasi tertentu bisa mengindikasikan proses editing.',
+        'AI Generated Flag': 'Heuristik sederhana apakah video berasal dari aplikasi populer yang sering digunakan oleh platform AI atau media sosial.'
                         'Color Range': getattr(track, 'colour_range', 'N/A'),
                         'Rotation': track.rotation or 'N/A'
                     })
