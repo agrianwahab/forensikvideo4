@@ -148,6 +148,12 @@ class AnalysisResult:
     localizations: list[dict] = field(default_factory=list)
     pdf_report_path: Path | None = None
     pdf_report_data: bytes | None = None
+    # ====== [NEW] Metadata Forensics Enhancement ======
+    html_report_path: Path | None = None
+    json_report_path: Path | None = None
+    html_report_data: bytes | None = None
+    json_report_data: bytes | None = None
+    # ====== [END NEW] ======
     # Tambahan untuk Tahap 3
     detailed_anomaly_analysis: dict = field(default_factory=dict)
     statistical_summary: dict = field(default_factory=dict)
@@ -580,6 +586,79 @@ def parse_ffprobe_output(metadata: dict) -> dict:
             'Bitrate': f"{int(stream.get('bit_rate', 0)) / 1000:.0f} kb/s" if 'bit_rate' in stream else 'N/A',
         }
     return parsed
+
+
+# ====== [NEW] Metadata Forensics Enhancement ======
+class VideoMetaAnalyzer:
+    def __init__(self, video_path: Path):
+        self.video_path = Path(video_path)
+        self.metadata = {}
+
+    def extract(self) -> dict:
+        data = {}
+        try:
+            from pymediainfo import MediaInfo
+            media = MediaInfo.parse(str(self.video_path))
+            for track in media.tracks:
+                if track.track_type == 'General':
+                    data.setdefault('Format', {})
+                    data['Format'].update({
+                        'Duration': f"{float(track.duration)/1000:.3f} s" if track.duration else 'N/A',
+                        'File Size': f"{int(track.file_size)/(1024*1024):.2f} MB" if track.file_size else 'N/A',
+                        'Creation Time': getattr(track, 'tagged_date', None) or 'N/A',
+                        'Modification Time': getattr(track, 'file_last_modification_date', None) or 'N/A',
+                        'Major Brand': getattr(track, 'format', 'N/A'),
+                        'Compatible Brands': getattr(track, 'compatible_brands', 'N/A')
+                    })
+                if track.track_type == 'Video':
+                    data.setdefault('Video Stream', {})
+                    data['Video Stream'].update({
+                        'Codec': track.codec or 'N/A',
+                        'Profile': track.format_profile or 'N/A',
+                        'Frame Rate': track.frame_rate or 'N/A',
+                        'Bit Rate': track.bit_rate or 'N/A',
+                        'Resolution': f"{track.width}x{track.height}" if track.width else 'N/A',
+                        'Colour Primaries': getattr(track, 'colour_primaries', 'N/A'),
+                        'GOP': getattr(track, 'gop', 'N/A'),
+                        'B-Frames': getattr(track, 'b_frame_count', 'N/A'),
+                        'Color Range': getattr(track, 'colour_range', 'N/A'),
+                        'Rotation': track.rotation or 'N/A'
+                    })
+                if track.track_type == 'Audio':
+                    data.setdefault('Audio Stream', {})
+                    data['Audio Stream'].update({
+                        'Codec': track.codec or 'N/A',
+                        'Sample Rate': track.sampling_rate or 'N/A',
+                        'Channel Layout': getattr(track, 'channel_layout', 'N/A'),
+                        'Language': track.language or 'N/A'
+                    })
+        except ImportError:
+            log('  \u26A0\ufe0f pymediainfo tidak ditemukan, fallback ke ffprobe.')
+        except Exception as e:
+            log(f"  {Icons.ERROR} Gagal mengekstrak metadata lanjutan: {e}")
+
+        if not data:
+            raw = ffprobe_metadata(self.video_path)
+            if raw:
+                data = parse_ffprobe_output(raw)
+        self.metadata = data
+        return data
+
+
+def explain_metadata(field: str) -> str:
+    explanations = {
+        'Codec': 'Format kompresi video/audio yang digunakan. Perubahan codec dapat menandakan proses konversi.',
+        'Frame Rate': 'Jumlah frame per detik. Ketidakwajaran bisa menunjukkan proses editing.',
+        'Bit Rate': 'Jumlah data per detik. Nilai terlalu rendah/tidak konsisten mengindikasikan kompresi ulang.',
+        'Colour Primaries': 'Standar warna file video. Ketidaksesuaian antar segmen dapat menjadi indikasi manipulasi.',
+        'Creation Time': 'Waktu pembuatan file asli. Bandingkan dengan Modification Time untuk menduga perubahan.',
+        'Modification Time': 'Waktu file terakhir diubah. Perbedaan jauh dari Creation Time bisa mencurigakan.',
+        'GOP': 'Jarak antar keyframe. Pola GOP tak konsisten dapat menunjukkan penyuntingan frame.',
+        'B-Frames': 'Frame prediktif dua arah yang biasanya muncul dalam encoding modern.',
+        'Major Brand': 'Identitas container utama yang memberi petunjuk asal perangkat atau encoder.'
+    }
+    return explanations.get(field, 'Tidak ada penjelasan khusus.')
+# ====== [END NEW] ======
 
 
 # --- FUNGSI DIREVISI: EKSTRAKSI FRAME DENGAN NORMALISASI WARNA ---
@@ -1112,6 +1191,13 @@ def run_tahap_1_pra_pemrosesan(video_path: Path, out_dir: Path, fps: int) -> Ana
         log(f"  {Icons.ERROR} Gagal mengekstrak metadata. Analisis tidak dapat dilanjutkan.")
         return None
     metadata = parse_ffprobe_output(raw_metadata)
+    # ====== [NEW] Metadata Forensics Enhancement ======
+    try:
+        meta_analyzer = VideoMetaAnalyzer(video_path)
+        metadata['Advanced'] = meta_analyzer.extract()
+    except Exception as e:
+        log(f"  {Icons.ERROR} Ekstraksi metadata lanjutan gagal: {e}")
+    # ====== [END NEW] ======
     log(f"  -> Metadata berhasil diurai. Codec video: {metadata.get('Video Stream', {}).get('Codec', 'N/A')}")
 
     log(f"  {Icons.COLLECTION} Mengekstrak, menormalisasi, dan membandingkan frame @ {fps} FPS...")
@@ -2129,12 +2215,38 @@ def calculate_event_severity(event: dict) -> float:
     # Adjust by duration
     if event.get('duration', 0) > 2.0:  # Long events are more severe
         severity *= 1.1
-    
+
     # Adjust by frame count
     if event.get('frame_count', 0) > 10:
         severity *= 1.1
-    
+
     return min(1.0, severity)
+
+# ====== [NEW] Metadata Forensics Enhancement ======
+def generate_simple_reports(result: AnalysisResult, report_dir: Path) -> None:
+    """Generate HTML & JSON forensic reports."""
+    report_dir.mkdir(parents=True, exist_ok=True)
+    data = {
+        'video': Path(result.video_path).name,
+        'hash': result.preservation_hash,
+        'summary': result.summary,
+        'metadata': result.metadata,
+        'integrity': result.integrity_analysis,
+        'localizations': result.localizations
+    }
+    json_path = report_dir / f"{Path(result.video_path).stem}_forensic.json"
+    html_path = report_dir / f"{Path(result.video_path).stem}_forensic.html"
+    try:
+        with open(json_path, 'w', encoding='utf-8') as jf:
+            json.dump(data, jf, indent=2)
+        html_content = f"<html><body><h1>Forensic Report</h1><pre>{json.dumps(data, indent=2)}</pre></body></html>"
+        with open(html_path, 'w', encoding='utf-8') as hf:
+            hf.write(html_content)
+        result.json_report_path = json_path
+        result.html_report_path = html_path
+    except Exception as e:
+        log(f"  {Icons.ERROR} Gagal membuat laporan HTML/JSON: {e}")
+# ====== [END NEW] ======
 
 # --- TAHAP 5: PENYUSUNAN LAPORAN & VALIDASI FORENSIK (ADJUSTED FOR ENHANCED TAHAP 4) ---
 def run_tahap_5_pelaporan_dan_validasi(result: AnalysisResult, out_dir: Path, baseline_result: AnalysisResult | None = None):
@@ -2465,6 +2577,9 @@ def run_tahap_5_pelaporan_dan_validasi(result: AnalysisResult, out_dir: Path, ba
         doc.build(story, onFirstPage=header_footer, onLaterPages=header_footer)
         log(f"\n  {Icons.SUCCESS} Laporan PDF berhasil dibuat: {pdf_path.name}")
         result.pdf_report_path = pdf_path
+        # ====== [NEW] Metadata Forensics Enhancement ======
+        generate_simple_reports(result, out_dir / "reports")
+        # ====== [END NEW] ======
     except Exception as e:
         log(f"\n  {Icons.ERROR} Gagal membuat laporan PDF: {e}")
         log(traceback.format_exc())
