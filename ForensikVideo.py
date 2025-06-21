@@ -568,79 +568,6 @@ def parse_ffprobe_output(metadata: dict) -> dict:
             'Encoder': stream.get('tags', {}).get('encoder', 'N/A'),
         }
 
-# ====== [NEW] Metadata Forensics Enhancement ======
-class VideoMetaAnalyzer:
-    def __init__(self, video_path: Path):
-        self.video_path = Path(video_path)
-        self.metadata = {}
-
-    def extract(self) -> dict:
-        data = {}
-        try:
-            from pymediainfo import MediaInfo
-            media = MediaInfo.parse(str(self.video_path))
-            for track in media.tracks:
-                if track.track_type == 'General':
-                    data.setdefault('Format', {})
-                    data['Format'].update({
-                        'Duration': f"{float(track.duration)/1000:.3f} s" if track.duration else 'N/A',
-                        'File Size': f"{int(track.file_size)/(1024*1024):.2f} MB" if track.file_size else 'N/A',
-                        'Creation Time': getattr(track, 'tagged_date', None) or 'N/A',
-                        'Modification Time': getattr(track, 'file_last_modification_date', None) or 'N/A',
-                        'Major Brand': getattr(track, 'format', 'N/A'),
-                        'Compatible Brands': getattr(track, 'compatible_brands', 'N/A')
-                    })
-                if track.track_type == 'Video':
-                    data.setdefault('Video Stream', {})
-                    data['Video Stream'].update({
-                        'Codec': track.codec or 'N/A',
-                        'Profile': track.format_profile or 'N/A',
-                        'Frame Rate': track.frame_rate or 'N/A',
-                        'Bit Rate': track.bit_rate or 'N/A',
-                        'Resolution': f"{track.width}x{track.height}" if track.width else 'N/A',
-                        'Colour Primaries': getattr(track, 'colour_primaries', 'N/A'),
-                        'GOP': getattr(track, 'gop', 'N/A'),
-                        'B-Frames': getattr(track, 'b_frame_count', 'N/A'),
-                        'Color Range': getattr(track, 'colour_range', 'N/A'),
-                        'Rotation': track.rotation or 'N/A'
-                    })
-                if track.track_type == 'Audio':
-                    data.setdefault('Audio Stream', {})
-                    data['Audio Stream'].update({
-                        'Codec': track.codec or 'N/A',
-                        'Sample Rate': track.sampling_rate or 'N/A',
-                        'Channel Layout': getattr(track, 'channel_layout', 'N/A'),
-                        'Language': track.language or 'N/A'
-                    })
-        except ImportError:
-            log('  \u26A0\ufe0f pymediainfo tidak ditemukan, fallback ke ffprobe.')
-        except Exception as e:
-            log(f"  {Icons.ERROR} Gagal mengekstrak metadata lanjutan: {e}")
-
-        if not data:
-            raw = ffprobe_metadata(self.video_path)
-            if raw:
-                data = parse_ffprobe_output(raw)
-        self.metadata = data
-        return data
-
-
-def explain_metadata(field: str) -> str:
-    explanations = {
-        'Codec': 'Format kompresi video/audio yang digunakan. Perubahan codec dapat menandakan proses konversi.',
-        'Frame Rate': 'Jumlah frame per detik. Ketidakwajaran bisa menunjukkan proses editing.',
-        'Bit Rate': 'Jumlah data per detik. Nilai terlalu rendah/tidak konsisten mengindikasikan kompresi ulang.',
-        'Colour Primaries': 'Standar warna file video. Ketidaksesuaian antar segmen dapat menjadi indikasi manipulasi.',
-        'Creation Time': 'Waktu pembuatan file asli. Bandingkan dengan Modification Time untuk menduga perubahan.',
-        'Modification Time': 'Waktu file terakhir diubah. Perbedaan jauh dari Creation Time bisa mencurigakan.',
-        'GOP': 'Jarak antar keyframe. Pola GOP tak konsisten dapat menunjukkan penyuntingan frame.',
-        'B-Frames': 'Frame prediktif dua arah yang biasanya muncul dalam encoding modern.',
-        'Major Brand': 'Identitas container utama yang memberi petunjuk asal perangkat atau encoder.'
-    }
-    return explanations.get(field, 'Tidak ada penjelasan khusus.')
-# ====== [END NEW] ======
-
-
 # --- FUNGSI DIREVISI: EKSTRAKSI FRAME DENGAN NORMALISASI WARNA ---
 def extract_frames_with_normalization(video_path: Path, out_dir: Path, fps: int) -> list[tuple[str, str, str]] | None:
     """Mengekstrak frame, menormalisasi, dan membuat gambar perbandingan."""
@@ -1205,6 +1132,13 @@ def create_anomaly_explanation_infographic(result: AnalysisResult, out_dir: Path
             CONFIG["KMEANS_CLUSTERS"] = 5
     # ====== [END NEW] ======
 
+    # ====== [NEW] False-Positive Fix June-2025 ======
+    if histograms:
+        scene_variance = float(np.var(histograms))
+        if scene_variance < 0.15:
+            CONFIG["KMEANS_CLUSTERS"] = 5
+    # ====== [END NEW] ======
+
     kmeans_artifacts = {}
     if histograms:
         actual_n_clusters = min(CONFIG["KMEANS_CLUSTERS"], len(histograms))
@@ -1382,18 +1316,28 @@ def run_tahap_3_sintesis_bukti(result: AnalysisResult, out_dir: Path):
                         
                         # Tambahkan penjelasan detail
                         explanation = {
-                            'type': 'optical_flow_spike',
-                            'frame_index': f.index,
-                            'timestamp': f.timestamp,
-                            'severity': 'high' if abs(z_score) > 6 else 'medium',
-                            'technical_explanation': f"Frame ini menunjukkan pergerakan piksel yang {abs(z_score):.1f}x lebih besar dari normal.",
-                            'simple_explanation': "Terjadi perubahan gambar yang sangat mendadak, seperti perpindahan kamera yang kasar atau cut yang tidak halus.",
-                            'metrics': {
-                                'flow_magnitude': f.optical_flow_mag,
-                                'z_score': z_score,
-                                'median_flow': median_flow,
-                                'deviation_percentage': ((f.optical_flow_mag - median_flow) / median_flow * 100) if median_flow > 0 else 0
-                            }
+                            "type": "optical_flow_spike",
+                            "frame_index": f.index,
+                            "timestamp": f.timestamp,
+                            "severity": "high" if abs(z_score) > 6 else "medium",
+                            "technical_explanation": (
+                                f"Frame ini menunjukkan pergerakan piksel yang {abs(z_score):.1f}x "
+                                "lebih besar dari normal."
+                            ),
+                            "simple_explanation": (
+                                "Terjadi perubahan gambar yang sangat mendadak, "
+                                "seperti perpindahan kamera yang kasar atau cut yang tidak halus."
+                            ),
+                            "metrics": {
+                                "flow_magnitude": f.optical_flow_mag,
+                                "z_score": z_score,
+                                "median_flow": median_flow,
+                                "deviation_percentage": (
+                                    (f.optical_flow_mag - median_flow) / median_flow * 100
+                                )
+                                if median_flow > 0
+                                else 0,
+                            },
                         }
                         f.evidence_obj.explanations['optical_flow'] = explanation
                         result.detailed_anomaly_analysis['temporal_discontinuities'].append(explanation)
@@ -1512,7 +1456,6 @@ def run_tahap_3_sintesis_bukti(result: AnalysisResult, out_dir: Path):
     
     if dup_candidates:
         log(f"  🔍 Ditemukan {len(dup_candidates)} grup kandidat duplikasi untuk diverifikasi...")
-                     
                 # Cek SSIM terlebih dahulu
                 im1 = cv2.imread(str(p1), cv2.IMREAD_GRAYSCALE)
                 im2 = cv2.imread(str(p2), cv2.IMREAD_GRAYSCALE)
@@ -2170,32 +2113,6 @@ def calculate_event_severity(event: dict) -> float:
     severity *= confidence_multiplier.get(event.get('confidence', 'N/A'), 0.5)
     
     # Adjust by duration
-
-# ====== [NEW] Metadata Forensics Enhancement ======
-def generate_simple_reports(result: AnalysisResult, report_dir: Path) -> None:
-    """Generate HTML & JSON forensic reports."""
-    report_dir.mkdir(parents=True, exist_ok=True)
-    data = {
-        'video': Path(result.video_path).name,
-        'hash': result.preservation_hash,
-        'summary': result.summary,
-        'metadata': result.metadata,
-        'integrity': result.integrity_analysis,
-        'localizations': result.localizations
-    }
-    json_path = report_dir / f"{Path(result.video_path).stem}_forensic.json"
-    html_path = report_dir / f"{Path(result.video_path).stem}_forensic.html"
-    try:
-        with open(json_path, 'w', encoding='utf-8') as jf:
-            json.dump(data, jf, indent=2)
-        html_content = f"<html><body><h1>Forensic Report</h1><pre>{json.dumps(data, indent=2)}</pre></body></html>"
-        with open(html_path, 'w', encoding='utf-8') as hf:
-            hf.write(html_content)
-        result.json_report_path = json_path
-        result.html_report_path = html_path
-    except Exception as e:
-        log(f"  {Icons.ERROR} Gagal membuat laporan HTML/JSON: {e}")
-# ====== [END NEW] ======
 
 # --- TAHAP 5: PENYUSUNAN LAPORAN & VALIDASI FORENSIK (ADJUSTED FOR ENHANCED TAHAP 4) ---
 def run_tahap_5_pelaporan_dan_validasi(result: AnalysisResult, out_dir: Path, baseline_result: AnalysisResult | None = None):
