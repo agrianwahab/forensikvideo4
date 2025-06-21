@@ -689,13 +689,7 @@ if selected_tab == "Analisis Baru":
                         c1, c2 = st.columns(2)
                         c1.metric("Total Frame Dianalisis", result.summary.get('total_frames', 'N/A'))
                         c2.write("**Hash Integritas (SHA-256)**"); c2.code(result.preservation_hash, language="bash")
-                        # ====== [NEW] False-Positive Fix June-2025 ======
-                        if result.summary.get('fps_normalized'):
-                            st.markdown(
-                                "<span style='background-color:#17a2b8;color:white;padding:4px;border-radius:4px;'>FPS Normalized</span>",
-                                unsafe_allow_html=True,
-                            )
-                        # ====== [END NEW] ======
+
                         # ====== [NEW] Metadata Forensics Enhancement ======
                         if st.button("ℹ️ Lihat Detail", key="btn_meta_detail"):
                             analyzer = fv.VideoMetaAnalyzer(Path(result.video_path))

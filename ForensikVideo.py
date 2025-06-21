@@ -583,7 +583,6 @@ def parse_ffprobe_output(metadata: dict) -> dict:
             'Encoder': stream.get('tags', {}).get('encoder', 'N/A'),
         }
 
-    audio_streams = [s for s in metadata.get('streams', []) if s.get('codec_type') == 'audio']
     if audio_streams:
         stream = audio_streams[0]
         parsed['Audio Stream'] = {
@@ -593,47 +592,6 @@ def parse_ffprobe_output(metadata: dict) -> dict:
             'Bitrate': f"{int(stream.get('bit_rate', 0)) / 1000:.0f} kb/s" if 'bit_rate' in stream else 'N/A',
         }
     return parsed
-
-# ====== [NEW] False-Positive Fix June-2025 ======
-class Preprocessor:
-    """Utilities for video preprocessing."""
-
-    @staticmethod
-    def normalize_fps(video_path: Path, target_fps: int = 30) -> tuple[Path, float | None]:
-        """Normalize FPS using ffmpeg if below threshold."""
-        try:
-            import ffmpeg
-        except ImportError:
-            log("⚠️ Modul ffmpeg-python tidak ditemukan. Install dengan `pip install ffmpeg-python`.")
-            return video_path, None
-
-        try:
-            probe = ffmpeg.probe(str(video_path))
-            v_stream = next((s for s in probe['streams'] if s.get('codec_type') == 'video'), None)
-            fps = eval(v_stream.get('avg_frame_rate', '0/1')) if v_stream else None
-        except Exception:
-            fps = None
-
-        if fps and fps < 24:
-            out_path = video_path.with_name(video_path.stem + f"_norm{target_fps}" + video_path.suffix)
-            try:
-                ffmpeg.input(str(video_path)).output(str(out_path), r=target_fps, loglevel='error').overwrite_output().run()
-                return out_path, fps
-            except Exception as e:
-                log(f"  {Icons.ERROR} Normalisasi FPS gagal: {e}")
-        return video_path, fps
-
-
-def adaptive_thresholds(fps: float, motion_level: float) -> tuple[float, float]:
-    """Return adaptive SSIM drop and optical flow z-score thresholds."""
-    ssim_val = 0.25 + (fps / 60.0) * 0.10
-    ssim_val = min(0.35, max(0.25, ssim_val))
-    z_thresh = round(4 + (30 / max(fps, 1.0)), 1)
-    if motion_level < 0.1:
-        z_thresh += 0.5
-    return ssim_val, z_thresh
-# ====== [END NEW] ======
-
 
 # ====== [NEW] Metadata Forensics Enhancement ======
 class VideoMetaAnalyzer:
@@ -1246,12 +1204,8 @@ def run_tahap_1_pra_pemrosesan(video_path: Path, out_dir: Path, fps: int) -> Ana
         log(f"  {Icons.ERROR} Gagal mengekstrak metadata. Analisis tidak dapat dilanjutkan.")
         return None
     metadata = parse_ffprobe_output(raw_metadata)
-    # ====== [NEW] False-Positive Fix June-2025 ======
-    metadata['fps_initial'] = original_fps
-    metadata['fps_effective'] = fps
-    metadata['fps_normalized'] = fps_normalized
-    # ====== [END NEW] ======
-    # ====== [NEW] Metadata Forensics Enhancement ======
+   
+  # ====== [NEW] Metadata Forensics Enhancement ======
     try:
         meta_analyzer = VideoMetaAnalyzer(video_path)
         metadata['Advanced'] = meta_analyzer.extract()
@@ -2670,6 +2624,4 @@ def run_tahap_5_pelaporan_dan_validasi(result: AnalysisResult, out_dir: Path, ba
         log(f"\n  {Icons.ERROR} Gagal membuat laporan PDF: {e}")
         log(traceback.format_exc())
         result.pdf_report_path = None
-
-# --- END OF FILE ForensikVideo.py (FIXED) ---
 
