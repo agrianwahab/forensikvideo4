@@ -190,6 +190,14 @@ with st.sidebar:
         )
         fps = st.number_input("Frame Extraction FPS", min_value=1, max_value=30, value=10, step=1)
         run = st.button("🚀 Jalankan Analisis Forensik", use_container_width=True, type="primary")
+
+        # ====== [NEW] False-Positive Fix June-2025 ======
+        st.subheader("⚙️  Threshold Setting")
+        auto_threshold = st.checkbox("Auto (Rekomendasi)", value=True)
+        ssim_slider = st.slider("SSIM Drop Threshold", 0.20, 0.50, 0.30, 0.01, disabled=auto_threshold)
+        z_slider = st.slider("Optical-Flow Z-score", 3.0, 8.0, 4.0, 0.1, disabled=auto_threshold)
+        bypass_debug = st.checkbox("Bypass PRNU / JPEG-DQ", value=False)
+        # ====== [END NEW] ======
         
         st.subheader("Pengaturan Detail")
         show_technical_details = st.checkbox("Tampilkan Detail Teknis", value=True)
@@ -574,6 +582,14 @@ if selected_tab == "Analisis Baru":
         if uploaded_video is None:
             st.error("⚠️ Mohon unggah video bukti terlebih dahulu di sidebar.")
         else:
+            # ====== [NEW] False-Positive Fix June-2025 ======
+            if auto_threshold:
+                fv.CONFIG['USE_AUTO_THRESHOLDS'] = True
+            else:
+                fv.CONFIG['USE_AUTO_THRESHOLDS'] = False
+                fv.CONFIG['SSIM_USER_THRESHOLD'] = float(ssim_slider)
+                fv.CONFIG['Z_USER_THRESHOLD'] = float(z_slider)
+            # ====== [END NEW] ======
             with tempfile.TemporaryDirectory() as tmpdir:
                 tmpdir_path = Path(tmpdir)
                 sus_path = tmpdir_path / uploaded_video.name
@@ -624,7 +640,17 @@ if selected_tab == "Analisis Baru":
                     with st.spinner("Mengemas hasil akhir untuk ditampilkan..."):
                         # Save ke riwayat DULU
                         history_manager.save_analysis(
-                            result, uploaded_video.name, {"fps": fps, "has_baseline": baseline_video is not None}
+                            result,
+                            uploaded_video.name,
+                            {
+                                "fps": fps,
+                                "has_baseline": baseline_video is not None,
+                                "fps_awal": result.metadata.get("fps_initial"),
+                                "fps_baru": result.metadata.get("fps_effective"),
+                                "ssim_threshold": fv.CONFIG.get("SSIM_DISCONTINUITY_DROP"),
+                                "z_threshold": fv.CONFIG.get("OPTICAL_FLOW_Z_THRESH"),
+                                "bypass_debug": bypass_debug,
+                            },
                         )
                         st.toast("Hasil analisis berhasil disimpan ke riwayat!")
                         
@@ -642,6 +668,10 @@ if selected_tab == "Analisis Baru":
                                 for v_key, v_path in loc.get('visualizations', {}).items(): loc[f'{v_key}_bytes'] = load_image_as_bytes(v_path)
                         if result.frames and result.frames[0].img_path_comparison: result.frames[0].comparison_bytes = load_image_as_bytes(result.frames[0].img_path_comparison)
                         if result.pdf_report_path: result.pdf_report_data = load_image_as_bytes(result.pdf_report_path)
+                        # ====== [NEW] Metadata Forensics Enhancement ======
+                        if result.html_report_path: result.html_report_data = load_image_as_bytes(result.html_report_path)
+                        if result.json_report_path: result.json_report_data = load_image_as_bytes(result.json_report_path)
+                        # ====== [END NEW] ======
 
                     st.success("Analisis selesai. Hasil ditampilkan di bawah ini.")
                     # ... (Kode untuk menampilkan tab hasil analisis tetap sama seperti yang Anda berikan) ...
@@ -659,6 +689,31 @@ if selected_tab == "Analisis Baru":
                         c1, c2 = st.columns(2)
                         c1.metric("Total Frame Dianalisis", result.summary.get('total_frames', 'N/A'))
                         c2.write("**Hash Integritas (SHA-256)**"); c2.code(result.preservation_hash, language="bash")
+                        # ====== [NEW] False-Positive Fix June-2025 ======
+                        if result.summary.get('fps_normalized'):
+                            st.markdown(
+                                "<span style='background-color:#17a2b8;color:white;padding:4px;border-radius:4px;'>FPS Normalized</span>",
+                                unsafe_allow_html=True,
+                            )
+                        # ====== [END NEW] ======
+                        # ====== [NEW] Metadata Forensics Enhancement ======
+                        if st.button("ℹ️ Lihat Detail", key="btn_meta_detail"):
+                            analyzer = fv.VideoMetaAnalyzer(Path(result.video_path))
+                            meta = analyzer.extract()
+                            with st.expander("Detail Metadata", expanded=True):
+                                for cat, items in meta.items():
+                                    st.markdown(f"#### {cat}")
+                                    rows = []
+                                    for k, v in items.items():
+                                        rows.append({'Parameter': k, 'Nilai': v, 'Penjelasan': fv.explain_metadata(k)})
+                                    st.dataframe(pd.DataFrame(rows))
+                            if result.html_report_path and Path(result.html_report_path).exists():
+                                with open(result.html_report_path, 'r') as f: html_data = f.read()
+                                st.download_button("📥 Download Laporan HTML", html_data, file_name=Path(result.html_report_path).name, mime="text/html", use_container_width=True)
+                            if result.json_report_path and Path(result.json_report_path).exists():
+                                with open(result.json_report_path, 'r') as f: json_data = f.read()
+                                st.download_button("📥 Download Laporan JSON", json_data, file_name=Path(result.json_report_path).name, mime="application/json", use_container_width=True)
+                        # ====== [END NEW] ======
                         with st.expander("Tampilkan Metadata Video Lengkap"):
                             for category, items in result.metadata.items():
                                 st.write(f"**{category}**")
@@ -1214,11 +1269,27 @@ if selected_tab == "Analisis Baru":
                         
                         if hasattr(result, 'pdf_report_data') and result.pdf_report_data:
                             st.download_button(
-                                label="📥 Unduh Laporan PDF Lengkap", 
-                                data=result.pdf_report_data, 
-                                file_name=result.pdf_report_path.name, 
-                                mime="application/pdf", 
+                                label="📥 Unduh Laporan PDF Lengkap",
+                                data=result.pdf_report_data,
+                                file_name=result.pdf_report_path.name,
+                                mime="application/pdf",
                                 use_container_width=True)
+                            # ====== [NEW] Metadata Forensics Enhancement ======
+                            if hasattr(result, 'html_report_data') and result.html_report_data:
+                                st.download_button(
+                                    label="📥 Unduh Laporan HTML",
+                                    data=result.html_report_data,
+                                    file_name=result.html_report_path.name,
+                                    mime="text/html",
+                                    use_container_width=True)
+                            if hasattr(result, 'json_report_data') and result.json_report_data:
+                                st.download_button(
+                                    label="📥 Unduh Laporan JSON",
+                                    data=result.json_report_data,
+                                    file_name=result.json_report_path.name,
+                                    mime="application/json",
+                                    use_container_width=True)
+                            # ====== [END NEW] ======
                             
                             # Preview laporan info
                             st.markdown("### 📋 Isi Laporan")
@@ -1298,3 +1369,4 @@ else:  # Halaman Riwayat Analisis
     render_history_page()
 
 # --- END OF FILE streamlit_app.py (MODIFIED) ---
+
