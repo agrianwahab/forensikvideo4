@@ -642,6 +642,10 @@ if selected_tab == "Analisis Baru":
                                 for v_key, v_path in loc.get('visualizations', {}).items(): loc[f'{v_key}_bytes'] = load_image_as_bytes(v_path)
                         if result.frames and result.frames[0].img_path_comparison: result.frames[0].comparison_bytes = load_image_as_bytes(result.frames[0].img_path_comparison)
                         if result.pdf_report_path: result.pdf_report_data = load_image_as_bytes(result.pdf_report_path)
+                        # ====== [NEW] Metadata Forensics Enhancement ======
+                        if result.html_report_path: result.html_report_data = load_image_as_bytes(result.html_report_path)
+                        if result.json_report_path: result.json_report_data = load_image_as_bytes(result.json_report_path)
+                        # ====== [END NEW] ======
 
                     st.success("Analisis selesai. Hasil ditampilkan di bawah ini.")
                     # ... (Kode untuk menampilkan tab hasil analisis tetap sama seperti yang Anda berikan) ...
@@ -659,6 +663,24 @@ if selected_tab == "Analisis Baru":
                         c1, c2 = st.columns(2)
                         c1.metric("Total Frame Dianalisis", result.summary.get('total_frames', 'N/A'))
                         c2.write("**Hash Integritas (SHA-256)**"); c2.code(result.preservation_hash, language="bash")
+                        # ====== [NEW] Metadata Forensics Enhancement ======
+                        if st.button("ℹ️ Lihat Detail", key="btn_meta_detail"):
+                            analyzer = fv.VideoMetaAnalyzer(Path(result.video_path))
+                            meta = analyzer.extract()
+                            with st.expander("Detail Metadata", expanded=True):
+                                for cat, items in meta.items():
+                                    st.markdown(f"#### {cat}")
+                                    rows = []
+                                    for k, v in items.items():
+                                        rows.append({'Parameter': k, 'Nilai': v, 'Penjelasan': fv.explain_metadata(k)})
+                                    st.dataframe(pd.DataFrame(rows))
+                            if result.html_report_path and Path(result.html_report_path).exists():
+                                with open(result.html_report_path, 'r') as f: html_data = f.read()
+                                st.download_button("📥 Download Laporan HTML", html_data, file_name=Path(result.html_report_path).name, mime="text/html", use_container_width=True)
+                            if result.json_report_path and Path(result.json_report_path).exists():
+                                with open(result.json_report_path, 'r') as f: json_data = f.read()
+                                st.download_button("📥 Download Laporan JSON", json_data, file_name=Path(result.json_report_path).name, mime="application/json", use_container_width=True)
+                        # ====== [END NEW] ======
                         with st.expander("Tampilkan Metadata Video Lengkap"):
                             for category, items in result.metadata.items():
                                 st.write(f"**{category}**")
@@ -1214,11 +1236,27 @@ if selected_tab == "Analisis Baru":
                         
                         if hasattr(result, 'pdf_report_data') and result.pdf_report_data:
                             st.download_button(
-                                label="📥 Unduh Laporan PDF Lengkap", 
-                                data=result.pdf_report_data, 
-                                file_name=result.pdf_report_path.name, 
-                                mime="application/pdf", 
+                                label="📥 Unduh Laporan PDF Lengkap",
+                                data=result.pdf_report_data,
+                                file_name=result.pdf_report_path.name,
+                                mime="application/pdf",
                                 use_container_width=True)
+                            # ====== [NEW] Metadata Forensics Enhancement ======
+                            if hasattr(result, 'html_report_data') and result.html_report_data:
+                                st.download_button(
+                                    label="📥 Unduh Laporan HTML",
+                                    data=result.html_report_data,
+                                    file_name=result.html_report_path.name,
+                                    mime="text/html",
+                                    use_container_width=True)
+                            if hasattr(result, 'json_report_data') and result.json_report_data:
+                                st.download_button(
+                                    label="📥 Unduh Laporan JSON",
+                                    data=result.json_report_data,
+                                    file_name=result.json_report_path.name,
+                                    mime="application/json",
+                                    use_container_width=True)
+                            # ====== [END NEW] ======
                             
                             # Preview laporan info
                             st.markdown("### 📋 Isi Laporan")

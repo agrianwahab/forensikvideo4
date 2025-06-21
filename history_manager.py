@@ -70,7 +70,14 @@ class HistoryManager:
             "localizations_count": len(result.localizations),
             "anomaly_types": self._count_anomaly_types(result),
             "saved_artifacts": saved_artifacts,
-            "additional_info": additional_info if additional_info else {}
+            "additional_info": additional_info if additional_info else {},
+            # ====== [NEW] Metadata Forensics Enhancement ======
+            "report_paths": {
+                "pdf": str(result.pdf_report_path) if result.pdf_report_path else None,
+                "html": str(getattr(result, 'html_report_path', '')) or None,
+                "json": str(getattr(result, 'json_report_path', '')) or None,
+            }
+            # ====== [END NEW] ======
         }
         
         history = self.load_history()
@@ -219,6 +226,21 @@ class HistoryManager:
                 target_path = folder / f"sample_anomaly_frame_{i}.jpg"
                 shutil.copy(loc['image'], target_path)
                 saved[f"anomaly_frame_{i}"] = str(target_path)
+
+        # ====== [NEW] Metadata Forensics Enhancement ======
+        if getattr(result, 'pdf_report_path', None) and os.path.exists(result.pdf_report_path):
+            target_path = folder / Path(result.pdf_report_path).name
+            shutil.copy(result.pdf_report_path, target_path)
+            saved['pdf_report'] = str(target_path)
+        if getattr(result, 'html_report_path', None) and os.path.exists(result.html_report_path):
+            target_path = folder / Path(result.html_report_path).name
+            shutil.copy(result.html_report_path, target_path)
+            saved['html_report'] = str(target_path)
+        if getattr(result, 'json_report_path', None) and os.path.exists(result.json_report_path):
+            target_path = folder / Path(result.json_report_path).name
+            shutil.copy(result.json_report_path, target_path)
+            saved['json_report'] = str(target_path)
+        # ====== [END NEW] ======
         
         return saved
     
